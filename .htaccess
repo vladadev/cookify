@@ -1,0 +1,14 @@
+Options -Indexes
+
+# Protect sensitive dirs
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block direct access to config and logs
+    RewriteRule ^config/   - [F,L]
+    RewriteRule ^logs/     - [F,L]
+    RewriteRule ^vendor/   - [F,L]
+</IfModule>
+
+# Set default charset
+AddDefaultCharset UTF-8
