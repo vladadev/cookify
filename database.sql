@@ -114,9 +114,10 @@ CREATE TABLE `ratings` (
 
 -- Admin: password = Admin123!
 INSERT INTO `users` (`name`, `email`, `password_hash`, `role`, `is_active`) VALUES
-('Admin User',  'admin@cookify.com', '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 1),
-('John Baker',  'john@example.com',  '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user',  1),
-('Sarah Cook',  'sarah@example.com', '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user',  1);
+-- All seed users have password: password
+('Admin User',  'admin@cookify.com', '$2y$10$jvdY3uW3O2D2pnJ7It/v5ODlGp8PJZhbeJXbiWSN9zKV50q7W3pzO', 'admin', 1),
+('John Baker',  'john@example.com',  '$2y$10$jvdY3uW3O2D2pnJ7It/v5ODlGp8PJZhbeJXbiWSN9zKV50q7W3pzO', 'user',  1),
+('Sarah Cook',  'sarah@example.com', '$2y$10$jvdY3uW3O2D2pnJ7It/v5ODlGp8PJZhbeJXbiWSN9zKV50q7W3pzO', 'user',  1);
 
 INSERT INTO `categories` (`name`, `description`) VALUES
 ('Breakfast',  'Morning meals and brunch recipes'),
