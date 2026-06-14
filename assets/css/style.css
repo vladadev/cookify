@@ -273,6 +273,17 @@ main.container { flex: 1; padding-top: 2rem; padding-bottom: 3rem; }
 
 .current-thumb { width: 120px; border-radius: var(--radius); margin-bottom: .6rem; }
 
+.hidden { display: none !important; }
+
+.inline-pwd-form {
+    display: flex; gap: .6rem; align-items: center; flex-wrap: wrap;
+    padding: .6rem 1rem; background: #fffbf0;
+}
+.inline-pwd-form input[type="password"] {
+    padding: .4rem .7rem; border: 1.5px solid var(--border);
+    border-radius: var(--radius); font-size: .9rem; width: 220px;
+}
+
 @media (max-width: 600px) {
     .filters { flex-direction: column; }
     .recipe-form .form-row { grid-template-columns: 1fr; }

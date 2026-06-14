@@ -68,6 +68,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
         <a href="<?= BASE_URL ?>/admin/users.php">Users</a>
         <a href="<?= BASE_URL ?>/admin/recipes.php">Recipes</a>
         <a href="<?= BASE_URL ?>/admin/categories.php" class="active">Categories</a>
+        <a href="<?= BASE_URL ?>/admin/ingredients.php">Ingredients</a>
         <a href="<?= BASE_URL ?>/admin/comments.php">Comments</a>
     </nav>
 </div>

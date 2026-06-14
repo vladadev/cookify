@@ -17,6 +17,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cookify<?= isset($page_title) ? ' — ' . htmlspecialchars($page_title) : '' ?></title>
+    <meta name="base-url" content="<?= BASE_URL ?>">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
 </head>
 <body>

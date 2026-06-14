@@ -11,8 +11,7 @@ log_access();
 $pdo    = get_db();
 $errors = [];
 
-$categories  = $pdo->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
-$ingredients = $pdo->query('SELECT id, name, unit FROM ingredients ORDER BY name')->fetchAll();
+$categories = $pdo->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title       = trim($_POST['title']       ?? '');
@@ -36,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_FILES['image']['name'])) {
         $paths = upload_image($_FILES['image']);
         if ($paths === false) {
-            $errors[] = 'Image upload failed. Allowed types: jpg, jpeg, png, gif, webp. Max size: 5MB.';
+            $errors[] = 'Image upload failed. Allowed types: jpg, jpeg, png, gif. Max size: 5MB.';
         } else {
             $image_original = $paths['original'];
             $image_thumb    = $paths['thumb'];
@@ -123,18 +122,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
 
         <div class="form-group">
             <label>Ingredients</label>
-            <div id="ingredients-list">
-                <div class="ingredient-row">
-                    <select name="ingredient_id[]" required>
-                        <option value="">Select ingredient…</option>
-                        <?php foreach ($ingredients as $ing): ?>
-                            <option value="<?= $ing['id'] ?>"><?= htmlspecialchars($ing['name']) ?> (<?= htmlspecialchars($ing['unit']) ?>)</option>
-                        <?php endforeach; ?>
-                    </select>
-                    <input type="number" name="ingredient_qty[]" placeholder="Quantity" step="0.01" min="0.01" required>
-                    <button type="button" class="btn btn-small btn-danger remove-ingredient">✕</button>
-                </div>
-            </div>
+            <div id="ingredients-list"></div>
             <button type="button" id="add-ingredient" class="btn btn-secondary btn-small">+ Add Ingredient</button>
         </div>
 
@@ -142,25 +130,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
     </form>
 </div>
 
-<script>
-const ingredientTemplate = `<?php
-$opts = '';
-foreach ($ingredients as $ing) {
-    $opts .= '<option value="' . $ing['id'] . '">' . htmlspecialchars($ing['name'], ENT_QUOTES) . ' (' . htmlspecialchars($ing['unit'], ENT_QUOTES) . ')</option>';
-}
-echo addslashes('<div class="ingredient-row"><select name="ingredient_id[]" required><option value="">Select ingredient…</option>' . $opts . '</select><input type="number" name="ingredient_qty[]" placeholder="Quantity" step="0.01" min="0.01" required><button type="button" class="btn btn-small btn-danger remove-ingredient">✕</button></div>');
-?>`;
-
-document.getElementById('add-ingredient').addEventListener('click', () => {
-    document.getElementById('ingredients-list').insertAdjacentHTML('beforeend', ingredientTemplate);
-});
-
-document.getElementById('ingredients-list').addEventListener('click', e => {
-    if (e.target.classList.contains('remove-ingredient')) {
-        const rows = document.querySelectorAll('.ingredient-row');
-        if (rows.length > 1) e.target.closest('.ingredient-row').remove();
-    }
-});
-</script>
+<script>const BASE_URL = '<?= BASE_URL ?>';</script>
+<script src="<?= BASE_URL ?>/assets/js/recipe-form.js"></script>
 
 <?php require_once dirname(__DIR__) . '/includes/footer.php'; ?>

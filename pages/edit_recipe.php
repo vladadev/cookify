@@ -146,30 +146,10 @@ require_once dirname(__DIR__) . '/includes/header.php';
             <label>Ingredients</label>
             <div id="ingredients-list">
                 <?php foreach ($recipe_ingredients as $ing_id => $qty): ?>
-                    <div class="ingredient-row">
-                        <select name="ingredient_id[]" required>
-                            <option value="">Select…</option>
-                            <?php foreach ($all_ingredients as $ing): ?>
-                                <option value="<?= $ing['id'] ?>" <?= $ing['id'] == $ing_id ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($ing['name']) ?> (<?= htmlspecialchars($ing['unit']) ?>)
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                        <input type="number" name="ingredient_qty[]" value="<?= $qty ?>" step="0.01" min="0.01" required>
-                        <button type="button" class="btn btn-small btn-danger remove-ingredient">✕</button>
-                    </div>
+                    <div class="ingredient-row" data-ing-id="<?= (int)$ing_id ?>" data-ing-qty="<?= htmlspecialchars((string)$qty) ?>"></div>
                 <?php endforeach; ?>
                 <?php if (empty($recipe_ingredients)): ?>
-                    <div class="ingredient-row">
-                        <select name="ingredient_id[]">
-                            <option value="">Select ingredient…</option>
-                            <?php foreach ($all_ingredients as $ing): ?>
-                                <option value="<?= $ing['id'] ?>"><?= htmlspecialchars($ing['name']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <input type="number" name="ingredient_qty[]" placeholder="Qty" step="0.01" min="0.01">
-                        <button type="button" class="btn btn-small btn-danger remove-ingredient">✕</button>
-                    </div>
+                    <div class="ingredient-row"></div>
                 <?php endif; ?>
             </div>
             <button type="button" id="add-ingredient" class="btn btn-secondary btn-small">+ Add Ingredient</button>
@@ -182,24 +162,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
     </form>
 </div>
 
-<script>
-const ingredientTemplate = `<?php
-$opts = '';
-foreach ($all_ingredients as $ing) {
-    $opts .= '<option value="' . $ing['id'] . '">' . htmlspecialchars($ing['name'], ENT_QUOTES) . ' (' . htmlspecialchars($ing['unit'], ENT_QUOTES) . ')</option>';
-}
-echo addslashes('<div class="ingredient-row"><select name="ingredient_id[]" required><option value="">Select ingredient…</option>' . $opts . '</select><input type="number" name="ingredient_qty[]" placeholder="Quantity" step="0.01" min="0.01" required><button type="button" class="btn btn-small btn-danger remove-ingredient">✕</button></div>');
-?>`;
-
-document.getElementById('add-ingredient').addEventListener('click', () => {
-    document.getElementById('ingredients-list').insertAdjacentHTML('beforeend', ingredientTemplate);
-});
-document.getElementById('ingredients-list').addEventListener('click', e => {
-    if (e.target.classList.contains('remove-ingredient')) {
-        const rows = document.querySelectorAll('.ingredient-row');
-        if (rows.length > 1) e.target.closest('.ingredient-row').remove();
-    }
-});
-</script>
+<script>const BASE_URL = '<?= BASE_URL ?>';</script>
+<script src="<?= BASE_URL ?>/assets/js/recipe-form.js"></script>
 
 <?php require_once dirname(__DIR__) . '/includes/footer.php'; ?>
