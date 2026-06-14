@@ -3,7 +3,7 @@
     <div class="container">
         <p>&copy; <?= date('Y') ?> Cookify — A PHP Cookbook Application</p>
         <nav>
-            <a href="<?= BASE_URL ?>/views/about.php">About the Author</a>
+            <a href="<?= BASE_URL ?>/views/author.php">About the Author</a>
             <a href="<?= BASE_URL ?>/documentation.pdf" target="_blank">Documentation</a>
         </nav>
     </div>

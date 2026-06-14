@@ -23,8 +23,8 @@
                    class="<?= $current_page === 'register.php' ? 'active' : '' ?>">Register</a>
             <?php endif; ?>
 
-            <a href="<?= BASE_URL ?>/views/about.php"
-               class="<?= $current_page === 'about.php' ? 'active' : '' ?>">About</a>
+            <a href="<?= BASE_URL ?>/views/author.php"
+               class="<?= $current_page === 'author.php' ? 'active' : '' ?>">Author</a>
         </nav>
     </div>
 </header>

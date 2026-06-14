@@ -16,7 +16,7 @@ require_once VIEWS . '/fixed/top-nav.php';
     <div class="about-card">
         <div class="about-avatar">👨‍💻</div>
         <div class="about-content">
-            <h2>Your Name Here</h2>
+            <h2>Vladimir Mijajlovic 160/25</h2>
             <p class="about-subtitle">Computer Science Student</p>
             <p>
                 <strong>Cookify</strong> was developed as a final assignment for the Web Programming course.
