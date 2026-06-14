@@ -6,14 +6,14 @@ function is_logged_in(): bool {
 
 function require_login(): void {
     if (!is_logged_in()) {
-        header('Location: ' . BASE_URL . '/pages/login.php');
+        header('Location: ' . BASE_URL . '/views/login.php');
         exit;
     }
 }
 
 function require_admin(): void {
     if (!is_logged_in() || $_SESSION['user_role'] !== 'admin') {
-        header('Location: ' . BASE_URL . '/pages/login.php');
+        header('Location: ' . BASE_URL . '/views/login.php');
         exit;
     }
 }
