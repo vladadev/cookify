@@ -1,9 +1,9 @@
 <?php $current_page = basename($_SERVER['PHP_SELF']); ?>
 <header class="site-header">
     <div class="container">
-        <a href="<?= BASE_URL ?>/views/index.php" class="logo">🍳 Cookify</a>
+        <a href="<?= BASE_URL ?>/" class="logo">🍳 Cookify</a>
         <nav class="main-nav">
-            <a href="<?= BASE_URL ?>/views/index.php"
+            <a href="<?= BASE_URL ?>/"
                class="<?= $current_page === 'index.php' && strpos($_SERVER['PHP_SELF'], '/admin/') === false ? 'active' : '' ?>">Recipes</a>
 
             <?php if (is_logged_in()): ?>

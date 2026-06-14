@@ -10,7 +10,7 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 log_access();
 
 if (is_logged_in()) {
-    header('Location: ' . BASE_URL . '/views/index.php');
+    header('Location: ' . BASE_URL . '/');
     exit;
 }
 
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['user_role'] = $user['role'];
 
-                header('Location: ' . BASE_URL . '/views/index.php');
+                header('Location: ' . BASE_URL . '/');
                 exit;
             } else {
                 $new_attempts = $user['failed_attempts'] + 1;

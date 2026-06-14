@@ -15,7 +15,7 @@ $pdo = get_db();
 
 $recipe = get_recipe_by_id($pdo, $id);
 if (!$recipe) {
-    header('Location: ' . BASE_URL . '/views/index.php');
+    header('Location: ' . BASE_URL . '/');
     exit;
 }
 
