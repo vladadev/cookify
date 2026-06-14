@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<title>Cookify — Dokumentacija</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; color: #222; background: #fff; }
+
+  .cover {
+    page-break-after: always;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    min-height: 100vh; text-align: center; background: #1a1a2e; color: #fff;
+  }
+  .cover h1 { font-size: 56px; font-weight: 800; letter-spacing: 2px; margin-bottom: 12px; }
+  .cover .subtitle { font-size: 20px; color: #a0aec0; margin-bottom: 40px; }
+  .cover .meta { font-size: 15px; color: #718096; line-height: 2; }
+  .cover .logo { font-size: 72px; margin-bottom: 24px; }
+
+  .toc-page { page-break-after: always; padding: 60px 80px; }
+  .toc-page h2 { font-size: 28px; border-bottom: 3px solid #e53e3e; padding-bottom: 10px; margin-bottom: 30px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { padding: 8px 0; font-size: 15px; border-bottom: 1px dotted #ddd; }
+  .toc li a { color: #2d3748; text-decoration: none; }
+  .toc li a:hover { color: #e53e3e; }
+  .toc li .sub { display: block; padding-left: 20px; font-size: 13px; color: #666; }
+
+  section { padding: 50px 80px; page-break-before: always; }
+  section:first-of-type { page-break-before: avoid; }
+
+  h2.section-title {
+    font-size: 26px; font-weight: 700; color: #1a1a2e;
+    border-left: 5px solid #e53e3e; padding-left: 14px;
+    margin-bottom: 30px;
+  }
+  h3 { font-size: 17px; color: #2d3748; margin: 28px 0 12px; font-weight: 600; }
+  p { line-height: 1.7; color: #4a5568; margin-bottom: 12px; }
+
+  .page-block { margin-bottom: 40px; page-break-inside: avoid; }
+  .screenshot-placeholder {
+    background: #f7fafc; border: 2px dashed #cbd5e0; border-radius: 8px;
+    min-height: 220px; display: flex; align-items: center; justify-content: center;
+    color: #a0aec0; font-size: 14px; font-style: italic; margin-bottom: 12px;
+  }
+  .page-desc { font-size: 13px; color: #4a5568; line-height: 1.6; }
+
+  .db-diagram { width: 100%; margin: 20px 0; }
+
+  .file-tree {
+    background: #1a1a2e; color: #e2e8f0; font-family: 'Courier New', monospace;
+    font-size: 12.5px; padding: 24px 28px; border-radius: 8px; line-height: 1.7;
+    overflow-x: auto;
+  }
+  .file-tree .dir { color: #63b3ed; font-weight: bold; }
+  .file-tree .file { color: #9ae6b4; }
+  .file-tree .comment { color: #718096; }
+
+  .code-block { page-break-inside: avoid; margin-bottom: 40px; }
+  .code-block .filename {
+    background: #1a1a2e; color: #fff; padding: 8px 16px;
+    font-family: 'Courier New', monospace; font-size: 12px; font-weight: bold;
+    border-radius: 6px 6px 0 0; display: flex; align-items: center; gap: 8px;
+  }
+  .code-block .filename .ext { color: #68d391; }
+  pre {
+    background: #f8f8f8; border: 1px solid #e2e8f0; border-top: none;
+    border-radius: 0 0 6px 6px; padding: 16px; overflow-x: auto;
+    font-family: 'Courier New', monospace; font-size: 11.5px; line-height: 1.6;
+    color: #2d3748;
+  }
+
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 12.5px; }
+  th { background: #1a1a2e; color: #fff; padding: 10px 12px; text-align: left; }
+  td { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+  tr:nth-child(even) td { background: #f7fafc; }
+
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: 11px; font-weight: 600;
+  }
+  .badge-pk  { background: #fed7d7; color: #c53030; }
+  .badge-fk  { background: #bee3f8; color: #2b6cb0; }
+  .badge-uq  { background: #fefcbf; color: #975a16; }
+
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    section { page-break-before: always; }
+    .code-block { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NASLOVNICA -->
+<div class="cover">
+  <div class="logo">🍳</div>
+  <h1>COOKIFY</h1>
+  <div class="subtitle">Web aplikacija za recepte — Projektna dokumentacija</div>
+  <div class="meta">
+    <strong>Autor:</strong> Vladimir Mijajlovic &nbsp;|&nbsp; <strong>Indeks:</strong> 160/25<br>
+    <strong>Predmet:</strong> Web programiranje<br>
+    <strong>Tehnologije:</strong> PHP 8 · MySQL · JavaScript · CSS3<br>
+    <strong>GitHub:</strong> github.com/vladadev/cookify
+  </div>
+</div>
+
+<!-- SADRŽAJ -->
+<div class="toc-page">
+  <h2>Sadržaj</h2>
+  <div class="toc">
+    <ol>
+      <li><a href="#stranice">Stranice aplikacije</a>
+        <span class="sub">Prikaz svih stranica sa opisom funkcionalnosti</span>
+      </li>
+      <li><a href="#baza">Dizajn baze podataka</a>
+        <span class="sub">ER dijagram, tabele i relacije (1:n i m:n)</span>
+      </li>
+      <li><a href="#struktura">Struktura projekta</a>
+        <span class="sub">Organizacija fajlova i foldera</span>
+      </li>
+      <li><a href="#kod">Kodovi</a>
+        <span class="sub">
+          4.1 config/config.php &nbsp;·&nbsp; 4.2 config/connection.php<br>
+          4.3 includes/auth.php &nbsp;·&nbsp; 4.4 includes/logger.php<br>
+          4.5 includes/upload.php &nbsp;·&nbsp; 4.6 includes/mailer.php<br>
+          4.7 models/users.php &nbsp;·&nbsp; 4.8 models/recipes.php<br>
+          4.9 models/categories.php &nbsp;·&nbsp; 4.10 models/ingredients.php<br>
+          4.11 models/comments.php &nbsp;·&nbsp; 4.12 models/ratings.php<br>
+          4.13 api/get_recipes.php &nbsp;·&nbsp; 4.14 api/get_ingredients.php<br>
+          4.15 views/fixed/head.php &nbsp;·&nbsp; 4.16 views/fixed/top-nav.php &nbsp;·&nbsp; 4.17 views/fixed/footer.php<br>
+          4.18 index.php &nbsp;·&nbsp; 4.19 views/login.php &nbsp;·&nbsp; 4.20 views/register.php<br>
+          4.21 views/activate.php &nbsp;·&nbsp; 4.22 views/logout.php<br>
+          4.23 views/recipe.php &nbsp;·&nbsp; 4.24 views/add_recipe.php &nbsp;·&nbsp; 4.25 views/edit_recipe.php<br>
+          4.26 views/my_recipes.php &nbsp;·&nbsp; 4.27 views/author.php<br>
+          4.28 views/admin/index.php &nbsp;·&nbsp; 4.29 views/admin/users.php<br>
+          4.30 views/admin/recipes.php &nbsp;·&nbsp; 4.31 views/admin/categories.php<br>
+          4.32 views/admin/ingredients.php &nbsp;·&nbsp; 4.33 views/admin/comments.php<br>
+          4.34 assets/js/main.js &nbsp;·&nbsp; 4.35 assets/js/recipe-form.js<br>
+          4.36 database.sql
+        </span>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<!-- 1. STRANICE -->
+<section id="stranice">
+  <h2 class="section-title">1. Stranice aplikacije</h2>
+  <p>U nastavku su prikazane sve stranice aplikacije Cookify sa kratkim opisom implementiranih funkcionalnosti.</p>
+
+  <div class="page-block">
+    <h3>1.1 Početna stranica — Recepti (<code>index.php</code>)</h3>
+    <div class="screenshot-placeholder">[ Screenshot: http://localhost/cookify/ ]</div>
+    <p class="page-desc">Početna stranica prikazuje mrežni prikaz (grid) svih recepata koji se učitavaju dinamički putem JavaScript Fetch API poziva prema <code>api/get_recipes.php</code>. Korisnik može filtrirati recepte po kategoriji, sortirati po naslovu, ocjeni ili vremenu pripreme, te pagirati kroz rezultate bez ponovnog učitavanja stranice (AJAX).</p>
+  </div>
+
+  <div class="page-block">
+    <h3>1.2 Stranica za prijavu (<code>views/login.php</code>)</h3>
+    <div class="screenshot-placeholder">[ Screenshot: http://localhost/cookify/views/login.php ]</div>
+    <p class="page-desc">Forma za prijavu validira korisničke podatke putem PDO prepared statements-a, a nakon 3 neuspješna pokušaja u roku od 5 minuta nalog se automatski zaključava i šalje se upozoravajući e-mail. Uspješnom prijavom se kreira PHP sesija sa ID-jem, imenom i ulogom korisnika.</p>
+  </div>
+
+  <div class="page-block">
+    <h3>1.3 Registracija (<code>views/register.php</code>)</h3>
+    <div class="screenshot-placeholder">[ Screenshot: http://localhost/cookify/views/register.php ]</div>
+    <p class="page-desc">Forma za registraciju validira unos (ime, e-mail, lozinka min. 8 znakova, podudaranje lozinki) i sprema korisnika u bazu sa BCRYPT hash-om lozinke i jedinstvenim aktivacionim tokenom. Nakon registracije šalje se aktivacioni e-mail putem PHPMailer biblioteke i Gmail SMTP servera.</p>
+  </div>
+
+  <div class="page-block">
+    <h3>1.4 Aktivacija naloga (<code>views/activate.php</code>)</h3>
+    <div class="screenshot-placeholder">[ Screenshot: http://localhost/cookify/views/activate.php?token=... ]</div>
+    <p class="page-desc">Stranica prima token iz URL parametra, provjerava ga u bazi podataka i aktivira nalog ako je token validan i nalog još uvijek neaktivan. Nakon aktivacije token se briše iz baze kako bi spriječio ponovnu upotrebu iste veze.</p>
+  </div>
+
+  <div class="page-block">
+    <h3>1.5 Detalj recepta (<code>views/recipe.php</code>)</h3>
+    <div class="screenshot-placeholder">[ Screenshot: http://localhost/cookify/views/recipe.php?id=1 ]</div>
+    <p class="page-desc">Prikazuje kompletne informacije o receptu: originalnu sliku, kategoriju, težinu, autora, prosječnu ocjenu, listu sastojaka sa količinama i komentare sortirane od najnovijeg. Prijavljeni korisnici mogu ostaviti komentar i/ili ocijeniti recept zvjezdicama (1–5), pri čemu je ocjena u bazi zaštićena UNIQUE ograničenjem (INSERT … ON DUPLICATE KEY UPDATE).</p>
+  </div>
+
+  <div class="page-block">
+    <h3>1.6 Dodavanje recepta (<code>views/add_recipe.php</code>)</h3>
+    <div class="screenshot-placeholder">[ Screenshot: http://localhost/cookify/views/add_recipe.php ]</div>
+    <p class="page-desc">Forma za dodavanje recepta omogućava unos naslova, opisa, kategorije, težine, vremena pripreme i upload slike (JPG/PNG/GIF, max 5MB). Sastojci se dinamički dodaju JavaScript-om koji dohvaća listu sastojaka putem AJAX poziva prema <code>api/get_ingredients.php</code>, a slika se procesira GD bibliotekom koja kreira thumbnail (max 400×300 px) i čuva originalnu verziju.</p>
+  </div>
+
+  <div class="page-block">
+    <h3>1.7 Uređivanje recepta (<code>views/edit_recipe.php</code>)</h3>
+    <div class="screenshot-placeholder">[ Screenshot: http://localhost/cookify/views/edit_recipe.php?id=1 ]</div>
+    <p class="page-desc">Identičan layout kao forma za dodavanje, uz predpopuliranje svih polja trenutnim podacima recepta i prikaz trenutne slike. Pristup je zaštićen provjerom vlasništva (samo autor ili admin može editovati), a zamjena slike je opcionalna — stara ostaje ako nova nije uploadovana.</p>
+  </div>
+
+  <div class="page-block">
+    <h3>1.8 Moji recepti (<code>views/my_recipes.php</code>)</h3>
+    <div class="screenshot-placeholder">[ Screenshot: http://localhost/cookify/views/my_recipes.php ]</div>
+    <p class="page-desc">Tabelarni prikaz svih recepata prijavljenog korisnika sa kolonama za naslov, kategoriju, težinu, prosječnu ocjenu i datum dodavanja. Svaki red ima dugmad za uređivanje i brisanje recepta, a tabela je potpuno responzivna — na mobilnim uređajima kolone se prikazuju kao "kartica" koristeći CSS <code>::before</code> pseudo-elemente i <code>data-label</code> atribute.</p>
+  </div>
+
+  <div class="page-block">
+    <h3>1.9 Admin panel — Dashboard (<code>views/admin/index.php</code>)</h3>
+    <div class="screenshot-placeholder">[ Screenshot: http://localhost/cookify/views/admin/index.php ]</div>
+    <p class="page-desc">Admin dashboard prikazuje četiri statistička kartice: ukupan broj korisnika, recepata, komentara i broj prijava danas. Ispod se nalazi tabela posjećenosti stranica parsirana iz <code>logs/access.log</code> fajla, sa procentualnim i vizualnim (progress bar) prikazom za svaku stranicu.</p>
+  </div>
+
+  <div class="page-block">
+    <h3>1.10 Admin — Upravljanje korisnicima (<code>views/admin/users.php</code>)</h3>
+    <div class="screenshot-placeholder">[ Screenshot: http://localhost/cookify/views/admin/users.php ]</div>
+    <p class="page-desc">Omogućava adminu da kreira novog korisnika (bez aktivacije e-maila), mijenja ulogu (user/admin) putem inline dropdown-a, resetuje lozinku, otključa zaključan nalog i briše korisnika — sve osim svog sopstvenog naloga. Forma za promjenu lozinke se prikazuje/skriva JavaScript-om.</p>
+  </div>
+
+  <div class="page-block">
+    <h3>1.11 Admin — Recepti, Kategorije, Sastojci, Komentari</h3>
+    <div class="screenshot-placeholder">[ Screenshot: views/admin/recipes.php, categories.php, ingredients.php, comments.php ]</div>
+    <p class="page-desc">Svaka od ovih admin stranica nudi CRUD operacije za odgovarajuće entitete: admin može pregledati sve zapise, dodavati, uređivati i brisati ih, uz zaštitu od brisanja recepata ili kategorija koji su u upotrebi (PDOException catch). Admin može dodavati nove sastojke koje korisnici potom biraju pri kreiranju recepata.</p>
+  </div>
+
+  <div class="page-block">
+    <h3>1.12 Stranica autora (<code>views/author.php</code>)</h3>
+    <div class="screenshot-placeholder">[ Screenshot: http://localhost/cookify/views/author.php ]</div>
+    <p class="page-desc">Statična informativna stranica sa podacima o autoru aplikacije i pregledom korišćenog tehničkog stack-a (PHP 8+, MySQL, GD Library, PHPMailer). Prikazuje ključne funkcionalnosti aplikacije razvijene u sklopu projektnog zadatka iz Web programiranja.</p>
+  </div>
+</section>
+
+<!-- 2. BAZA PODATAKA -->
+<section id="baza">
+  <h2 class="section-title">2. Dizajn baze podataka</h2>
+
+  <h3>ER dijagram</h3>
+  <svg class="db-diagram" viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+
+    <!-- users -->
+    <rect x="10" y="10" width="190" height="220" rx="6" fill="#ebf8ff" stroke="#3182ce" stroke-width="2"/>
+    <rect x="10" y="10" width="190" height="32" rx="6" fill="#3182ce"/>
+    <rect x="10" y="36" width="190" height="6" fill="#3182ce"/>
+    <text x="105" y="31" text-anchor="middle" fill="white" font-weight="bold" font-size="14">users</text>
+    <text x="20" y="65" font-size="11.5" fill="#2c5282">🔑 id (PK)</text>
+    <text x="20" y="83" font-size="11.5" fill="#2d3748">name</text>
+    <text x="20" y="101" font-size="11.5" fill="#2d3748">email (UNIQUE)</text>
+    <text x="20" y="119" font-size="11.5" fill="#2d3748">password_hash</text>
+    <text x="20" y="137" font-size="11.5" fill="#2d3748">role (user|admin)</text>
+    <text x="20" y="155" font-size="11.5" fill="#2d3748">activation_token</text>
+    <text x="20" y="173" font-size="11.5" fill="#2d3748">is_active</text>
+    <text x="20" y="191" font-size="11.5" fill="#2d3748">failed_attempts</text>
+    <text x="20" y="209" font-size="11.5" fill="#2d3748">is_locked</text>
+
+    <!-- categories -->
+    <rect x="10" y="270" width="190" height="120" rx="6" fill="#f0fff4" stroke="#38a169" stroke-width="2"/>
+    <rect x="10" y="270" width="190" height="32" rx="6" fill="#38a169"/>
+    <rect x="10" y="296" width="190" height="6" fill="#38a169"/>
+    <text x="105" y="291" text-anchor="middle" fill="white" font-weight="bold" font-size="14">categories</text>
+    <text x="20" y="325" font-size="11.5" fill="#276749">🔑 id (PK)</text>
+    <text x="20" y="343" font-size="11.5" fill="#2d3748">name</text>
+    <text x="20" y="361" font-size="11.5" fill="#2d3748">description</text>
+
+    <!-- recipes -->
+    <rect x="355" y="140" width="200" height="230" rx="6" fill="#fffaf0" stroke="#dd6b20" stroke-width="2"/>
+    <rect x="355" y="140" width="200" height="32" rx="6" fill="#dd6b20"/>
+    <rect x="355" y="166" width="200" height="6" fill="#dd6b20"/>
+    <text x="455" y="161" text-anchor="middle" fill="white" font-weight="bold" font-size="14">recipes</text>
+    <text x="365" y="195" font-size="11.5" fill="#7b341e">🔑 id (PK)</text>
+    <text x="365" y="213" font-size="11.5" fill="#2d3748">🔗 user_id (FK)</text>
+    <text x="365" y="231" font-size="11.5" fill="#2d3748">🔗 category_id (FK)</text>
+    <text x="365" y="249" font-size="11.5" fill="#2d3748">title</text>
+    <text x="365" y="267" font-size="11.5" fill="#2d3748">description</text>
+    <text x="365" y="285" font-size="11.5" fill="#2d3748">prep_time</text>
+    <text x="365" y="303" font-size="11.5" fill="#2d3748">difficulty</text>
+    <text x="365" y="321" font-size="11.5" fill="#2d3748">image_original</text>
+    <text x="365" y="339" font-size="11.5" fill="#2d3748">image_thumb</text>
+
+    <!-- ingredients -->
+    <rect x="355" y="410" width="190" height="110" rx="6" fill="#faf5ff" stroke="#805ad5" stroke-width="2"/>
+    <rect x="355" y="410" width="190" height="32" rx="6" fill="#805ad5"/>
+    <rect x="355" y="436" width="190" height="6" fill="#805ad5"/>
+    <text x="450" y="431" text-anchor="middle" fill="white" font-weight="bold" font-size="14">ingredients</text>
+    <text x="365" y="465" font-size="11.5" fill="#553c9a">🔑 id (PK)</text>
+    <text x="365" y="483" font-size="11.5" fill="#2d3748">name</text>
+    <text x="365" y="501" font-size="11.5" fill="#2d3748">unit</text>
+
+    <!-- recipe_ingredients (bridge) -->
+    <rect x="620" y="360" width="195" height="120" rx="6" fill="#fff5f5" stroke="#e53e3e" stroke-width="2" stroke-dasharray="6,3"/>
+    <rect x="620" y="360" width="195" height="32" rx="6" fill="#e53e3e"/>
+    <rect x="620" y="386" width="195" height="6" fill="#e53e3e"/>
+    <text x="718" y="381" text-anchor="middle" fill="white" font-weight="bold" font-size="12">recipe_ingredients</text>
+    <text x="630" y="415" font-size="11" fill="#9b2c2c">🔗 recipe_id (FK,PK)</text>
+    <text x="630" y="433" font-size="11" fill="#9b2c2c">🔗 ingredient_id (FK,PK)</text>
+    <text x="630" y="451" font-size="11.5" fill="#2d3748">quantity</text>
+
+    <!-- comments -->
+    <rect x="680" y="10" width="195" height="140" rx="6" fill="#fff5f5" stroke="#fc8181" stroke-width="2"/>
+    <rect x="680" y="10" width="195" height="32" rx="6" fill="#fc8181"/>
+    <rect x="680" y="36" width="195" height="6" fill="#fc8181"/>
+    <text x="778" y="31" text-anchor="middle" fill="white" font-weight="bold" font-size="14">comments</text>
+    <text x="690" y="65" font-size="11.5" fill="#c53030">🔑 id (PK)</text>
+    <text x="690" y="83" font-size="11.5" fill="#2d3748">🔗 recipe_id (FK)</text>
+    <text x="690" y="101" font-size="11.5" fill="#2d3748">🔗 user_id (FK)</text>
+    <text x="690" y="119" font-size="11.5" fill="#2d3748">body</text>
+    <text x="690" y="137" font-size="11.5" fill="#2d3748">created_at</text>
+
+    <!-- ratings -->
+    <rect x="680" y="175" width="195" height="150" rx="6" fill="#fffff0" stroke="#d69e2e" stroke-width="2"/>
+    <rect x="680" y="175" width="195" height="32" rx="6" fill="#d69e2e"/>
+    <rect x="680" y="201" width="195" height="6" fill="#d69e2e"/>
+    <text x="778" y="196" text-anchor="middle" fill="white" font-weight="bold" font-size="14">ratings</text>
+    <text x="690" y="230" font-size="11.5" fill="#744210">🔑 id (PK)</text>
+    <text x="690" y="248" font-size="11.5" fill="#2d3748">🔗 recipe_id (FK)</text>
+    <text x="690" y="266" font-size="11.5" fill="#2d3748">🔗 user_id (FK)</text>
+    <text x="690" y="284" font-size="11.5" fill="#2d3748">score (1–5)</text>
+    <text x="690" y="302" font-size="11.5" fill="#744210">UNIQUE(recipe_id, user_id)</text>
+
+    <!-- Relations: users -> recipes (1:n) -->
+    <line x1="200" y1="80" x2="355" y2="220" stroke="#3182ce" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <text x="268" y="140" font-size="10" fill="#3182ce" font-weight="bold">1 : n</text>
+
+    <!-- categories -> recipes (1:n) -->
+    <line x1="200" y1="340" x2="355" y2="300" stroke="#38a169" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <text x="256" y="318" font-size="10" fill="#38a169" font-weight="bold">1 : n</text>
+
+    <!-- recipes -> comments (1:n) -->
+    <line x1="555" y1="200" x2="680" y2="80" stroke="#fc8181" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <text x="604" y="130" font-size="10" fill="#e53e3e" font-weight="bold">1 : n</text>
+
+    <!-- recipes -> ratings (1:n) -->
+    <line x1="555" y1="240" x2="680" y2="260" stroke="#d69e2e" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <text x="604" y="248" font-size="10" fill="#d69e2e" font-weight="bold">1 : n</text>
+
+    <!-- recipes -> recipe_ingredients (m:n bridge) -->
+    <line x1="555" y1="320" x2="620" y2="390" stroke="#e53e3e" stroke-width="1.5"/>
+    <text x="572" y="362" font-size="10" fill="#e53e3e" font-weight="bold">n</text>
+
+    <!-- ingredients -> recipe_ingredients -->
+    <line x1="545" y1="460" x2="620" y2="430" stroke="#805ad5" stroke-width="1.5"/>
+    <text x="570" y="440" font-size="10" fill="#805ad5" font-weight="bold">n</text>
+
+    <!-- m:n label -->
+    <text x="450" y="530" text-anchor="middle" font-size="12" fill="#e53e3e" font-weight="bold">m : n (recipes ↔ ingredients)</text>
+
+    <!-- users -> comments (1:n) -->
+    <line x1="105" y1="10" x2="730" y2="83" stroke="#3182ce" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+    <!-- users -> ratings -->
+    <line x1="105" y1="10" x2="730" y2="248" stroke="#3182ce" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+  </svg>
+
+  <h3>Tabele i relacije</h3>
+  <table>
+    <tr><th>Tabela</th><th>Opis</th><th>Relacije</th></tr>
+    <tr><td><strong>users</strong></td><td>Korisnici — prijava, uloge, lockout mehanizam</td><td>1:n → recipes, comments, ratings</td></tr>
+    <tr><td><strong>categories</strong></td><td>Kategorije recepata (Breakfast, Dinner…)</td><td>1:n → recipes</td></tr>
+    <tr><td><strong>recipes</strong></td><td>Recepti — naslov, opis, slike, težina, vreme</td><td>n:1 ← users, categories; 1:n → comments, ratings; m:n ↔ ingredients</td></tr>
+    <tr><td><strong>ingredients</strong></td><td>Sastojci sa jedinicom mere (g, ml, pcs…)</td><td>m:n ↔ recipes (putem recipe_ingredients)</td></tr>
+    <tr><td><strong>recipe_ingredients</strong></td><td>Vezna tabela: recept ↔ sastojak + količina</td><td>Kompozitni PK: (recipe_id, ingredient_id)</td></tr>
+    <tr><td><strong>comments</strong></td><td>Komentari korisnika na recepte</td><td>n:1 ← recipes, users</td></tr>
+    <tr><td><strong>ratings</strong></td><td>Ocjene (1–5); jedan korisnik = jedna ocjena po receptu</td><td>n:1 ← recipes, users; UNIQUE(recipe_id, user_id)</td></tr>
+  </table>
+
+  <h3>Ukupan broj relacija</h3>
+  <table>
+    <tr><th>Tip</th><th>Relacije</th><th>Broj</th></tr>
+    <tr><td>1 : n</td><td>users→recipes, users→comments, users→ratings, categories→recipes, recipes→comments, recipes→ratings</td><td>6</td></tr>
+    <tr><td>m : n</td><td>recipes ↔ ingredients (putem recipe_ingredients)</td><td>1</td></tr>
+  </table>
+</section>
+
+<!-- 3. STRUKTURA PROJEKTA -->
+<section id="struktura">
+  <h2 class="section-title">3. Struktura projekta</h2>
+  <p>Projekat prati MVC-sličnu organizaciju fajlova. Donja struktura odgovara tačnom sadržaju GitHub repozitorijuma.</p>
+
+  <div class="file-tree">
+<span class="dir">cookify/</span>
+│
+├── <span class="file">index.php</span>                    <span class="comment">← početna stranica (root)</span>
+├── <span class="file">database.sql</span>                 <span class="comment">← SQL schema + seed podaci</span>
+├── <span class="file">composer.json</span>
+├── <span class="file">.gitignore</span>
+├── <span class="file">.env</span>                         <span class="comment">← kredencijali (gitignored)</span>
+│
+├── <span class="dir">config/</span>
+│   ├── <span class="file">config.php</span>               <span class="comment">← konstante, čita .env</span>
+│   ├── <span class="file">connection.php</span>           <span class="comment">← get_db() PDO singleton</span>
+│   └── <span class="file">config.example.php</span>
+│
+├── <span class="dir">models/</span>                        <span class="comment">← funkcije za rad sa bazom</span>
+│   ├── <span class="file">users.php</span>
+│   ├── <span class="file">recipes.php</span>
+│   ├── <span class="file">categories.php</span>
+│   ├── <span class="file">ingredients.php</span>
+│   ├── <span class="file">comments.php</span>
+│   └── <span class="file">ratings.php</span>
+│
+├── <span class="dir">views/</span>                         <span class="comment">← sve stranice</span>
+│   ├── <span class="file">login.php</span>
+│   ├── <span class="file">register.php</span>
+│   ├── <span class="file">activate.php</span>
+│   ├── <span class="file">logout.php</span>
+│   ├── <span class="file">recipe.php</span>
+│   ├── <span class="file">add_recipe.php</span>
+│   ├── <span class="file">edit_recipe.php</span>
+│   ├── <span class="file">my_recipes.php</span>
+│   ├── <span class="file">author.php</span>
+│   │
+│   ├── <span class="dir">fixed/</span>                     <span class="comment">← layout komponente</span>
+│   │   ├── <span class="file">head.php</span>             <span class="comment">← DOCTYPE, head, CSS</span>
+│   │   ├── <span class="file">top-nav.php</span>         <span class="comment">← header + nav + &lt;main&gt;</span>
+│   │   └── <span class="file">footer.php</span>          <span class="comment">← &lt;/main&gt;, footer, JS, &lt;/html&gt;</span>
+│   │
+│   └── <span class="dir">admin/</span>                     <span class="comment">← admin panel (zaštićen)</span>
+│       ├── <span class="file">index.php</span>            <span class="comment">← dashboard + statistike</span>
+│       ├── <span class="file">users.php</span>
+│       ├── <span class="file">recipes.php</span>
+│       ├── <span class="file">categories.php</span>
+│       ├── <span class="file">ingredients.php</span>
+│       └── <span class="file">comments.php</span>
+│
+├── <span class="dir">api/</span>                           <span class="comment">← JSON endpoint-i za AJAX</span>
+│   ├── <span class="file">get_recipes.php</span>          <span class="comment">← filter/sort/paginate recepti</span>
+│   └── <span class="file">get_ingredients.php</span>      <span class="comment">← lista sastojaka</span>
+│
+├── <span class="dir">includes/</span>                      <span class="comment">← pomoćne funkcije</span>
+│   ├── <span class="file">auth.php</span>                 <span class="comment">← is_logged_in, require_login…</span>
+│   ├── <span class="file">logger.php</span>               <span class="comment">← log_access()</span>
+│   ├── <span class="file">upload.php</span>               <span class="comment">← upload_image(), GD thumbnail</span>
+│   └── <span class="file">mailer.php</span>               <span class="comment">← PHPMailer wrapper</span>
+│
+├── <span class="dir">assets/</span>
+│   ├── <span class="dir">css/</span>
+│   │   └── <span class="file">style.css</span>            <span class="comment">← svi stilovi, responsivan dizajn</span>
+│   └── <span class="dir">js/</span>
+│       ├── <span class="file">main.js</span>              <span class="comment">← AJAX grid, paginacija, filteri</span>
+│       └── <span class="file">recipe-form.js</span>       <span class="comment">← dinamički red sastojaka</span>
+│
+├── <span class="dir">uploads/</span>
+│   ├── <span class="dir">original/</span>               <span class="comment">← originalne slike recepata</span>
+│   └── <span class="dir">thumbs/</span>                 <span class="comment">← thumbnails (max 400×300)</span>
+│
+├── <span class="dir">logs/</span>
+│   └── <span class="file">access.log</span>               <span class="comment">← log posjeta stranica</span>
+│
+└── <span class="dir">vendor/</span>                        <span class="comment">← Composer paketi (gitignored)</span>
+    └── PHPMailer/…
+  </div>
+</section>
+
+<!-- 4. KODOVI -->
+<section id="kod">
+  <h2 class="section-title">4. Kodovi</h2>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">config/config.php</span></div>
+    <pre><?php
+
+$env = parse_ini_file(__DIR__ . '/../.env');
+
+define('ROOT',   dirname(__DIR__));
+define('VIEWS',  ROOT . '/views');
+define('MODELS', ROOT . '/models');
+
+define('BASE_URL', $env['BASE_URL']);
+
+define('DB_HOST',    $env['DB_HOST']);
+define('DB_NAME',    $env['DB_NAME']);
+define('DB_USER',    $env['DB_USER']);
+define('DB_PASS',    $env['DB_PASS']);
+define('DB_CHARSET', 'utf8mb4');
+
+define('UPLOAD_DIR',      ROOT . '/uploads/');
+define('UPLOAD_ORIGINAL', ROOT . '/uploads/original/');
+define('UPLOAD_THUMBS',   ROOT . '/uploads/thumbs/');
+define('LOG_FILE',        ROOT . '/logs/access.log');
+
+define('MAX_FILE_SIZE',  5 * 1024 * 1024);
+define('THUMB_WIDTH',    400);
+define('THUMB_HEIGHT',   300);
+
+define('MAIL_HOST',      $env['MAIL_HOST']);
+define('MAIL_PORT',      (int) $env['MAIL_PORT']);
+define('MAIL_USERNAME',  $env['MAIL_USERNAME']);
+define('MAIL_PASSWORD',  $env['MAIL_PASSWORD']);
+define('MAIL_FROM',      $env['MAIL_FROM']);
+define('MAIL_FROM_NAME', $env['MAIL_FROM_NAME']);
+
+define('LOGIN_MAX_ATTEMPTS',    3);
+define('LOGIN_LOCKOUT_MINUTES', 5);</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">config/connection.php</span></div>
+    <pre><?php
+
+function get_db(): PDO
+{
+    static $pdo = null;
+    if ($pdo === null) {
+        $dsn     = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET;
+        $options = [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+        ];
+        $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
+    }
+    return $pdo;
+}</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">includes/auth.php</span></div>
+    <pre><?php
+
+function is_logged_in(): bool {
+    return isset($_SESSION['user_id']);
+}
+
+function require_login(): void {
+    if (!is_logged_in()) {
+        header('Location: ' . BASE_URL . '/views/login.php');
+        exit;
+    }
+}
+
+function require_admin(): void {
+    if (!is_logged_in() || $_SESSION['user_role'] !== 'admin') {
+        header('Location: ' . BASE_URL . '/views/login.php');
+        exit;
+    }
+}
+
+function current_user_id(): ?int {
+    return $_SESSION['user_id'] ?? null;
+}
+
+function current_user_role(): ?string {
+    return $_SESSION['user_role'] ?? null;
+}
+
+function is_admin(): bool {
+    return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
+}</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">includes/logger.php</span></div>
+    <pre><?php
+
+function log_access(): void {
+    $timestamp = date('Y-m-d H:i:s');
+    $uri       = $_SERVER['REQUEST_URI'] ?? '/';
+    $ip        = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+    $user_id   = $_SESSION['user_id'] ?? 'guest';
+
+    $line = "[{$timestamp}] | {$uri} | IP: {$ip} | User: {$user_id}" . PHP_EOL;
+
+    file_put_contents(LOG_FILE, $line, FILE_APPEND | LOCK_EX);
+}</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">includes/upload.php</span></div>
+    <pre><?php
+
+function upload_image(array $file): array|false {
+    $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+    $allowed_exts  = ['jpg', 'jpeg', 'png', 'gif'];
+
+    if ($file['error'] !== UPLOAD_ERR_OK) return false;
+    if ($file['size'] > MAX_FILE_SIZE)    return false;
+
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mime  = finfo_file($finfo, $file['tmp_name']);
+    finfo_close($finfo);
+
+    if (!in_array($mime, $allowed_types, true)) return false;
+
+    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    if (!in_array($ext, $allowed_exts, true)) return false;
+
+    $filename   = uniqid('img_', true) . '.' . $ext;
+    $orig_path  = UPLOAD_ORIGINAL . $filename;
+    $thumb_path = UPLOAD_THUMBS   . $filename;
+
+    if (!move_uploaded_file($file['tmp_name'], $orig_path)) return false;
+
+    if (!create_thumbnail($orig_path, $thumb_path, $mime)) {
+        copy($orig_path, $thumb_path);
+    }
+
+    return [
+        'original' => 'uploads/original/' . $filename,
+        'thumb'    => 'uploads/thumbs/'   . $filename,
+    ];
+}
+
+function create_thumbnail(string $src, string $dst, string $mime): bool {
+    [$orig_w, $orig_h] = getimagesize($src);
+
+    $source = match ($mime) {
+        'image/jpeg' => imagecreatefromjpeg($src),
+        'image/png'  => imagecreatefrompng($src),
+        'image/gif'  => imagecreatefromgif($src),
+        default      => false,
+    };
+
+    if (!$source) return false;
+
+    $ratio = min(THUMB_WIDTH / $orig_w, THUMB_HEIGHT / $orig_h, 1.0);
+    $new_w = (int) round($orig_w * $ratio);
+    $new_h = (int) round($orig_h * $ratio);
+
+    $thumb = imagecreatetruecolor($new_w, $new_h);
+
+    if ($mime === 'image/png') {
+        imagealphablending($thumb, false);
+        imagesavealpha($thumb, true);
+    }
+
+    imagecopyresampled($thumb, $source, 0, 0, 0, 0, $new_w, $new_h, $orig_w, $orig_h);
+
+    $result = match ($mime) {
+        'image/jpeg' => imagejpeg($thumb, $dst, 85),
+        'image/png'  => imagepng($thumb, $dst, 6),
+        'image/gif'  => imagegif($thumb, $dst),
+        default      => false,
+    };
+
+    imagedestroy($source);
+    imagedestroy($thumb);
+    return (bool) $result;
+}</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">includes/mailer.php</span></div>
+    <pre><?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require_once ROOT . '/vendor/autoload.php';
+
+function send_email(string $to, string $to_name, string $subject, string $body): bool {
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host       = MAIL_HOST;
+        $mail->SMTPAuth   = true;
+        $mail->Username   = MAIL_USERNAME;
+        $mail->Password   = MAIL_PASSWORD;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = MAIL_PORT;
+
+        $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
+        $mail->addAddress($to, $to_name);
+
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body    = $body;
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        error_log('Mailer error: ' . $mail->ErrorInfo);
+        return false;
+    }
+}
+
+function send_activation_email(string $email, string $name, string $token): bool {
+    $link    = BASE_URL . '/views/activate.php?token=' . urlencode($token);
+    $subject = 'Activate your Cookify account';
+    $body    = "
+        &lt;h2&gt;Welcome to Cookify, {$name}!&lt;/h2&gt;
+        &lt;p&gt;Please click the link below to activate your account:&lt;/p&gt;
+        &lt;p&gt;&lt;a href='{$link}'&gt;{$link}&lt;/a&gt;&lt;/p&gt;
+        &lt;p&gt;If you did not register, please ignore this email.&lt;/p&gt;
+    ";
+    return send_email($email, $name, $subject, $body);
+}
+
+function send_lock_warning_email(string $email, string $name): bool {
+    $subject = 'Cookify — Account Locked';
+    $body    = "
+        &lt;h2&gt;Account Security Alert&lt;/h2&gt;
+        &lt;p&gt;Hello {$name},&lt;/p&gt;
+        &lt;p&gt;Your Cookify account has been locked due to 3 failed login attempts within 5 minutes.&lt;/p&gt;
+        &lt;p&gt;If this was not you, please contact the administrator.&lt;/p&gt;
+    ";
+    return send_email($email, $name, $subject, $body);
+}</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">models/users.php</span></div>
+    <pre><?php
+
+function get_user_by_email(PDO $pdo, string $email): array|false
+{
+    $stmt = $pdo->prepare('SELECT * FROM users WHERE email = ?');
+    $stmt->execute([$email]);
+    return $stmt->fetch();
+}
+
+function get_user_by_token(PDO $pdo, string $token): array|false
+{
+    $stmt = $pdo->prepare('SELECT id FROM users WHERE activation_token = ? AND is_active = 0');
+    $stmt->execute([$token]);
+    return $stmt->fetch();
+}
+
+function get_all_users(PDO $pdo): array
+{
+    return $pdo->query('SELECT * FROM users ORDER BY created_at DESC')->fetchAll();
+}
+
+function insert_user(PDO $pdo, string $name, string $email, string $hash, string $token): void
+{
+    $pdo->prepare('INSERT INTO users (name, email, password_hash, activation_token) VALUES (?, ?, ?, ?)')
+        ->execute([$name, $email, $hash, $token]);
+}
+
+function activate_user(PDO $pdo, int $id): void
+{
+    $pdo->prepare('UPDATE users SET is_active = 1, activation_token = NULL WHERE id = ?')->execute([$id]);
+}
+
+function record_failed_login(PDO $pdo, int $id, int $new_attempts): void
+{
+    $pdo->prepare('UPDATE users SET failed_attempts = ?, last_failed_at = NOW() WHERE id = ?')
+        ->execute([$new_attempts, $id]);
+}
+
+function lock_user(PDO $pdo, int $id): void
+{
+    $pdo->prepare('UPDATE users SET is_locked = 1 WHERE id = ?')->execute([$id]);
+}
+
+function reset_failed_attempts(PDO $pdo, int $id): void
+{
+    $pdo->prepare('UPDATE users SET failed_attempts = 0, last_failed_at = NULL WHERE id = ?')->execute([$id]);
+}
+
+function record_login(PDO $pdo, int $id): void
+{
+    $pdo->prepare('UPDATE users SET failed_attempts = 0, last_failed_at = NULL, last_login_at = NOW() WHERE id = ?')
+        ->execute([$id]);
+}
+
+function set_user_role(PDO $pdo, int $id, string $role): void
+{
+    $pdo->prepare('UPDATE users SET role = ? WHERE id = ?')->execute([$role, $id]);
+}
+
+function unlock_user(PDO $pdo, int $id): void
+{
+    $pdo->prepare('UPDATE users SET is_locked = 0, failed_attempts = 0 WHERE id = ?')->execute([$id]);
+}
+
+function delete_user(PDO $pdo, int $id): void
+{
+    $pdo->prepare('DELETE FROM users WHERE id = ?')->execute([$id]);
+}
+
+function change_user_password(PDO $pdo, int $id, string $new_password): void
+{
+    $hash = password_hash($new_password, PASSWORD_BCRYPT);
+    $pdo->prepare('UPDATE users SET password_hash = ? WHERE id = ?')->execute([$hash, $id]);
+}
+
+function count_logins_today(PDO $pdo): int
+{
+    return (int) $pdo->query("SELECT COUNT(*) FROM users WHERE DATE(last_login_at) = CURDATE()")->fetchColumn();
+}</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">models/recipes.php</span></div>
+    <pre><?php
+
+function get_all_recipes(PDO $pdo, ?int $category_id, string $sort, string $order, int $page, int $per_page): array
+{
+    $allowed_sort  = ['title', 'avg_rating', 'prep_time', 'created_at'];
+    $allowed_order = ['ASC', 'DESC'];
+    if (!in_array($sort, $allowed_sort, true))   $sort  = 'created_at';
+    if (!in_array($order, $allowed_order, true)) $order = 'DESC';
+
+    $where  = 'WHERE 1=1';
+    $params = [];
+
+    if ($category_id !== null) {
+        $where   .= ' AND r.category_id = ?';
+        $params[] = $category_id;
+    }
+
+    $sort_col = $sort === 'avg_rating' ? 'avg_rating' : 'r.' . $sort;
+    $offset   = ($page - 1) * $per_page;
+
+    $count_stmt = $pdo->prepare("SELECT COUNT(*) FROM recipes r $where");
+    $count_stmt->execute($params);
+    $total = (int) $count_stmt->fetchColumn();
+
+    $stmt = $pdo->prepare("
+        SELECT r.id, r.title, r.description, r.prep_time, r.difficulty,
+               r.image_thumb, r.created_at,
+               c.name AS category_name,
+               u.name AS author_name,
+               ROUND(AVG(rt.score), 1) AS avg_rating,
+               COUNT(DISTINCT rt.id)   AS rating_count
+        FROM recipes r
+        JOIN categories c ON c.id = r.category_id
+        JOIN users u      ON u.id = r.user_id
+        LEFT JOIN ratings rt ON rt.recipe_id = r.id
+        $where
+        GROUP BY r.id
+        ORDER BY $sort_col $order
+        LIMIT ? OFFSET ?
+    ");
+    $params[] = $per_page;
+    $params[] = $offset;
+    $stmt->execute($params);
+
+    return ['rows' => $stmt->fetchAll(), 'total' => $total];
+}
+
+function get_recipe_by_id(PDO $pdo, int $id): array|false
+{
+    $stmt = $pdo->prepare('
+        SELECT r.*, c.name AS category_name, u.name AS author_name,
+               ROUND(AVG(rt.score), 1) AS avg_rating,
+               COUNT(DISTINCT rt.id)   AS rating_count
+        FROM recipes r
+        JOIN categories c ON c.id = r.category_id
+        JOIN users u      ON u.id = r.user_id
+        LEFT JOIN ratings rt ON rt.recipe_id = r.id
+        WHERE r.id = ?
+        GROUP BY r.id
+    ');
+    $stmt->execute([$id]);
+    return $stmt->fetch();
+}
+
+function get_recipe_ingredients(PDO $pdo, int $recipe_id): array
+{
+    $stmt = $pdo->prepare('
+        SELECT i.name, i.unit, ri.quantity
+        FROM recipe_ingredients ri
+        JOIN ingredients i ON i.id = ri.ingredient_id
+        WHERE ri.recipe_id = ?
+        ORDER BY i.name
+    ');
+    $stmt->execute([$recipe_id]);
+    return $stmt->fetchAll();
+}
+
+function get_user_recipes(PDO $pdo, int $user_id): array
+{
+    $stmt = $pdo->prepare('
+        SELECT r.*, c.name AS category_name,
+               ROUND(AVG(rt.score), 1) AS avg_rating
+        FROM recipes r
+        JOIN categories c ON c.id = r.category_id
+        LEFT JOIN ratings rt ON rt.recipe_id = r.id
+        WHERE r.user_id = ?
+        GROUP BY r.id
+        ORDER BY r.created_at DESC
+    ');
+    $stmt->execute([$user_id]);
+    return $stmt->fetchAll();
+}
+
+function insert_recipe(PDO $pdo, int $user_id, int $category_id, string $title, string $description,
+                       int $prep_time, string $difficulty, ?string $image_original, ?string $image_thumb): int
+{
+    $pdo->prepare('
+        INSERT INTO recipes (user_id, category_id, title, description, prep_time, difficulty, image_original, image_thumb)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    ')->execute([$user_id, $category_id, $title, $description, $prep_time, $difficulty, $image_original, $image_thumb]);
+    return (int) $pdo->lastInsertId();
+}
+
+function update_recipe(PDO $pdo, int $id, int $category_id, string $title, string $description,
+                       int $prep_time, string $difficulty, ?string $image_original, ?string $image_thumb): void
+{
+    $pdo->prepare('
+        UPDATE recipes
+        SET category_id = ?, title = ?, description = ?, prep_time = ?,
+            difficulty = ?, image_original = ?, image_thumb = ?
+        WHERE id = ?
+    ')->execute([$category_id, $title, $description, $prep_time, $difficulty, $image_original, $image_thumb, $id]);
+}
+
+function delete_recipe(PDO $pdo, int $id): void
+{
+    $pdo->prepare('DELETE FROM recipes WHERE id = ?')->execute([$id]);
+}
+
+function save_recipe_ingredients(PDO $pdo, int $recipe_id, array $ing_ids, array $ing_qtys): void
+{
+    $pdo->prepare('DELETE FROM recipe_ingredients WHERE recipe_id = ?')->execute([$recipe_id]);
+    $stmt = $pdo->prepare('INSERT INTO recipe_ingredients (recipe_id, ingredient_id, quantity) VALUES (?, ?, ?)');
+    foreach ($ing_ids as $k => $ing_id) {
+        $ing_id = (int) $ing_id;
+        $qty    = (float) ($ing_qtys[$k] ?? 0);
+        if ($ing_id > 0 && $qty > 0) {
+            $stmt->execute([$recipe_id, $ing_id, $qty]);
+        }
+    }
+}
+
+function get_all_recipes_admin(PDO $pdo): array
+{
+    return $pdo->query('
+        SELECT r.id, r.title, r.difficulty, r.prep_time, r.created_at,
+               c.name AS category_name, u.name AS author_name
+        FROM recipes r
+        JOIN categories c ON c.id = r.category_id
+        JOIN users u      ON u.id = r.user_id
+        ORDER BY r.created_at DESC
+    ')->fetchAll();
+}</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">models/categories.php</span></div>
+    <pre><?php
+
+function get_all_categories(PDO $pdo): array
+{
+    return $pdo->query('SELECT id, name, description FROM categories ORDER BY name')->fetchAll();
+}
+
+function get_categories_with_count(PDO $pdo): array
+{
+    return $pdo->query('
+        SELECT c.*, COUNT(r.id) AS recipe_count
+        FROM categories c
+        LEFT JOIN recipes r ON r.category_id = c.id
+        GROUP BY c.id
+        ORDER BY c.name
+    ')->fetchAll();
+}
+
+function get_category_by_id(PDO $pdo, int $id): array|false
+{
+    $stmt = $pdo->prepare('SELECT * FROM categories WHERE id = ?');
+    $stmt->execute([$id]);
+    return $stmt->fetch();
+}
+
+function insert_category(PDO $pdo, string $name, string $description): void
+{
+    $pdo->prepare('INSERT INTO categories (name, description) VALUES (?, ?)')->execute([$name, $description]);
+}
+
+function update_category(PDO $pdo, int $id, string $name, string $description): void
+{
+    $pdo->prepare('UPDATE categories SET name = ?, description = ? WHERE id = ?')->execute([$name, $description, $id]);
+}
+
+function delete_category(PDO $pdo, int $id): void
+{
+    $pdo->prepare('DELETE FROM categories WHERE id = ?')->execute([$id]);
+}</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">models/ingredients.php</span></div>
+    <pre><?php
+
+function get_all_ingredients(PDO $pdo): array
+{
+    return $pdo->query('SELECT id, name, unit FROM ingredients ORDER BY name')->fetchAll();
+}
+
+function get_ingredients_with_count(PDO $pdo): array
+{
+    return $pdo->query('
+        SELECT i.*, COUNT(ri.recipe_id) AS recipe_count
+        FROM ingredients i
+        LEFT JOIN recipe_ingredients ri ON ri.ingredient_id = i.id
+        GROUP BY i.id
+        ORDER BY i.name
+    ')->fetchAll();
+}
+
+function get_ingredient_by_id(PDO $pdo, int $id): array|false
+{
+    $stmt = $pdo->prepare('SELECT * FROM ingredients WHERE id = ?');
+    $stmt->execute([$id]);
+    return $stmt->fetch();
+}
+
+function insert_ingredient(PDO $pdo, string $name, string $unit): void
+{
+    $pdo->prepare('INSERT INTO ingredients (name, unit) VALUES (?, ?)')->execute([$name, $unit]);
+}
+
+function update_ingredient(PDO $pdo, int $id, string $name, string $unit): void
+{
+    $pdo->prepare('UPDATE ingredients SET name = ?, unit = ? WHERE id = ?')->execute([$name, $unit, $id]);
+}
+
+function delete_ingredient(PDO $pdo, int $id): void
+{
+    $pdo->prepare('DELETE FROM ingredients WHERE id = ?')->execute([$id]);
+}
+
+function get_recipe_ingredient_map(PDO $pdo, int $recipe_id): array
+{
+    $stmt = $pdo->prepare('SELECT ingredient_id, quantity FROM recipe_ingredients WHERE recipe_id = ?');
+    $stmt->execute([$recipe_id]);
+    return $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+}</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">models/comments.php</span></div>
+    <pre><?php
+
+function get_comments_for_recipe(PDO $pdo, int $recipe_id): array
+{
+    $stmt = $pdo->prepare('
+        SELECT cm.*, u.name AS user_name
+        FROM comments cm
+        JOIN users u ON u.id = cm.user_id
+        WHERE cm.recipe_id = ?
+        ORDER BY cm.created_at DESC
+    ');
+    $stmt->execute([$recipe_id]);
+    return $stmt->fetchAll();
+}
+
+function insert_comment(PDO $pdo, int $recipe_id, int $user_id, string $body): void
+{
+    $pdo->prepare('INSERT INTO comments (recipe_id, user_id, body) VALUES (?, ?, ?)')
+        ->execute([$recipe_id, $user_id, $body]);
+}
+
+function delete_comment(PDO $pdo, int $id): void
+{
+    $pdo->prepare('DELETE FROM comments WHERE id = ?')->execute([$id]);
+}
+
+function get_all_comments_admin(PDO $pdo): array
+{
+    return $pdo->query('
+        SELECT cm.*, u.name AS user_name, r.title AS recipe_title, r.id AS recipe_id
+        FROM comments cm
+        JOIN users u   ON u.id  = cm.user_id
+        JOIN recipes r ON r.id  = cm.recipe_id
+        ORDER BY cm.created_at DESC
+    ')->fetchAll();
+}</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">models/ratings.php</span></div>
+    <pre><?php
+
+function get_user_rating(PDO $pdo, int $recipe_id, int $user_id): ?int
+{
+    $stmt = $pdo->prepare('SELECT score FROM ratings WHERE recipe_id = ? AND user_id = ?');
+    $stmt->execute([$recipe_id, $user_id]);
+    $row = $stmt->fetch();
+    return $row ? (int) $row['score'] : null;
+}
+
+function upsert_rating(PDO $pdo, int $recipe_id, int $user_id, int $score): void
+{
+    $pdo->prepare('
+        INSERT INTO ratings (recipe_id, user_id, score) VALUES (?, ?, ?)
+        ON DUPLICATE KEY UPDATE score = VALUES(score)
+    ')->execute([$recipe_id, $user_id, $score]);
+}</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">api/get_recipes.php</span></div>
+    <pre><?php
+require_once dirname(__DIR__) . '/config/config.php';
+require_once ROOT . '/config/connection.php';
+require_once ROOT . '/models/recipes.php';
+
+header('Content-Type: application/json; charset=utf-8');
+
+$category_id = isset($_GET['category_id']) && (int) $_GET['category_id'] > 0
+    ? (int) $_GET['category_id'] : null;
+
+$sort     = $_GET['sort']  ?? 'created_at';
+$order    = strtoupper($_GET['order'] ?? 'DESC');
+$page     = max(1, (int) ($_GET['page']     ?? 1));
+$per_page = min(24, max(1, (int) ($_GET['per_page'] ?? 6)));
+
+$pdo    = get_db();
+$result = get_all_recipes($pdo, $category_id, $sort, $order, $page, $per_page);
+
+foreach ($result['rows'] as &$r) {
+    $r['image_thumb'] = $r['image_thumb'] ? BASE_URL . '/' . $r['image_thumb'] : null;
+    $r['url']         = BASE_URL . '/views/recipe.php?id=' . $r['id'];
+}
+
+echo json_encode([
+    'recipes'     => $result['rows'],
+    'total'       => $result['total'],
+    'page'        => $page,
+    'per_page'    => $per_page,
+    'total_pages' => (int) ceil($result['total'] / $per_page),
+]);</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">api/get_ingredients.php</span></div>
+    <pre><?php
+require_once dirname(__DIR__) . '/config/config.php';
+require_once ROOT . '/config/connection.php';
+require_once ROOT . '/models/ingredients.php';
+
+header('Content-Type: application/json; charset=utf-8');
+
+echo json_encode(get_all_ingredients(get_db()));</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">views/fixed/head.php</span></div>
+    <pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;meta name="base-url" content="&lt;?= BASE_URL ?&gt;"&gt;
+    &lt;title&gt;Cookify&lt;?= isset($page_title) ? ' — ' . htmlspecialchars($page_title) : '' ?&gt;&lt;/title&gt;
+    &lt;link rel="stylesheet" href="&lt;?= BASE_URL ?&gt;/assets/css/style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">views/fixed/top-nav.php</span></div>
+    <pre>&lt;?php $current_page = basename($_SERVER['PHP_SELF']); ?&gt;
+&lt;header class="site-header"&gt;
+    &lt;div class="container"&gt;
+        &lt;a href="&lt;?= BASE_URL ?&gt;/" class="logo"&gt;🍳 Cookify&lt;/a&gt;
+        &lt;nav class="main-nav"&gt;
+            &lt;a href="&lt;?= BASE_URL ?&gt;/"
+               class="&lt;?= $current_page === 'index.php' &amp;&amp; strpos($_SERVER['PHP_SELF'], '/admin/') === false ? 'active' : '' ?&gt;"&gt;Recipes&lt;/a&gt;
+
+            &lt;?php if (is_logged_in()): ?&gt;
+                &lt;a href="&lt;?= BASE_URL ?&gt;/views/add_recipe.php"
+                   class="&lt;?= $current_page === 'add_recipe.php' ? 'active' : '' ?&gt;"&gt;Add Recipe&lt;/a&gt;
+                &lt;a href="&lt;?= BASE_URL ?&gt;/views/my_recipes.php"
+                   class="&lt;?= $current_page === 'my_recipes.php' ? 'active' : '' ?&gt;"&gt;My Recipes&lt;/a&gt;
+                &lt;?php if (is_admin()): ?&gt;
+                    &lt;a href="&lt;?= BASE_URL ?&gt;/views/admin/index.php"
+                       class="&lt;?= strpos($_SERVER['PHP_SELF'], '/admin/') !== false ? 'active' : '' ?&gt;"&gt;Admin&lt;/a&gt;
+                &lt;?php endif; ?&gt;
+                &lt;a href="&lt;?= BASE_URL ?&gt;/views/logout.php"&gt;Logout (&lt;?= htmlspecialchars($_SESSION['user_name']) ?&gt;)&lt;/a&gt;
+            &lt;?php else: ?&gt;
+                &lt;a href="&lt;?= BASE_URL ?&gt;/views/login.php"
+                   class="&lt;?= $current_page === 'login.php' ? 'active' : '' ?&gt;"&gt;Login&lt;/a&gt;
+                &lt;a href="&lt;?= BASE_URL ?&gt;/views/register.php"
+                   class="&lt;?= $current_page === 'register.php' ? 'active' : '' ?&gt;"&gt;Register&lt;/a&gt;
+            &lt;?php endif; ?&gt;
+            &lt;a href="&lt;?= BASE_URL ?&gt;/views/author.php"
+               class="&lt;?= $current_page === 'author.php' ? 'active' : '' ?&gt;"&gt;Author&lt;/a&gt;
+        &lt;/nav&gt;
+    &lt;/div&gt;
+&lt;/header&gt;
+&lt;main class="container"&gt;</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">views/fixed/footer.php</span></div>
+    <pre>&lt;/main&gt;
+&lt;footer class="site-footer"&gt;
+    &lt;div class="container"&gt;
+        &lt;p&gt;&amp;copy; &lt;?= date('Y') ?&gt; Cookify — A PHP Cookbook Application&lt;/p&gt;
+        &lt;nav&gt;
+            &lt;a href="&lt;?= BASE_URL ?&gt;/views/author.php"&gt;About the Author&lt;/a&gt;
+            &lt;a href="&lt;?= BASE_URL ?&gt;/documentation.pdf" target="_blank"&gt;Documentation&lt;/a&gt;
+        &lt;/nav&gt;
+    &lt;/div&gt;
+&lt;/footer&gt;
+&lt;script src="&lt;?= BASE_URL ?&gt;/assets/js/main.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">index.php</span></div>
+    <pre>&lt;?php
+require_once __DIR__ . '/config/config.php';
+require_once ROOT . '/config/connection.php';
+require_once ROOT . '/includes/auth.php';
+require_once ROOT . '/includes/logger.php';
+require_once ROOT . '/models/categories.php';
+
+if (session_status() === PHP_SESSION_NONE) session_start();
+log_access();
+
+$pdo        = get_db();
+$categories = get_all_categories($pdo);
+$page_title = 'All Recipes';
+
+require_once VIEWS . '/fixed/head.php';
+require_once VIEWS . '/fixed/top-nav.php';
+?&gt;
+
+&lt;div class="page-header"&gt;&lt;h1&gt;Recipes&lt;/h1&gt;&lt;/div&gt;
+
+&lt;div class="filters"&gt;
+    &lt;select id="filter-category"&gt;
+        &lt;option value=""&gt;All Categories&lt;/option&gt;
+        &lt;?php foreach ($categories as $cat): ?&gt;
+            &lt;option value="&lt;?= $cat['id'] ?&gt;"&gt;&lt;?= htmlspecialchars($cat['name']) ?&gt;&lt;/option&gt;
+        &lt;?php endforeach; ?&gt;
+    &lt;/select&gt;
+    &lt;select id="filter-sort"&gt;
+        &lt;option value="created_at"&gt;Newest First&lt;/option&gt;
+        &lt;option value="title"&gt;Title A–Z&lt;/option&gt;
+        &lt;option value="avg_rating"&gt;Top Rated&lt;/option&gt;
+        &lt;option value="prep_time"&gt;Prep Time&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;select id="filter-order"&gt;
+        &lt;option value="DESC"&gt;Descending&lt;/option&gt;
+        &lt;option value="ASC"&gt;Ascending&lt;/option&gt;
+    &lt;/select&gt;
+&lt;/div&gt;
+
+&lt;div id="recipes-grid" class="recipes-grid"&gt;
+    &lt;p class="loading"&gt;Loading recipes…&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="pagination" class="pagination"&gt;&lt;/div&gt;
+
+&lt;?php require_once VIEWS . '/fixed/footer.php'; ?&gt;</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">views/login.php</span></div>
+    <pre>&lt;?php
+require_once dirname(__DIR__) . '/config/config.php';
+require_once ROOT . '/config/connection.php';
+require_once ROOT . '/includes/auth.php';
+require_once ROOT . '/includes/logger.php';
+require_once ROOT . '/includes/mailer.php';
+require_once ROOT . '/models/users.php';
+
+if (session_status() === PHP_SESSION_NONE) session_start();
+log_access();
+
+if (is_logged_in()) { header('Location: ' . BASE_URL . '/'); exit; }
+
+$errors = [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email    = trim($_POST['email']    ?? '');
+    $password = trim($_POST['password'] ?? '');
+
+    if (empty($email) || empty($password)) {
+        $errors[] = 'Please enter your email and password.';
+    } else {
+        $pdo  = get_db();
+        $user = get_user_by_email($pdo, $email);
+
+        if (!$user || !$user['is_active']) {
+            $errors[] = 'Invalid credentials or account not activated.';
+        } elseif ($user['is_locked']) {
+            $errors[] = 'Your account is locked. Please contact the administrator.';
+        } else {
+            $now      = new DateTime();
+            $last_fail = $user['last_failed_at'] ? new DateTime($user['last_failed_at']) : null;
+            $minutes  = $last_fail ? ($now->getTimestamp() - $last_fail->getTimestamp()) / 60 : PHP_INT_MAX;
+
+            if ($minutes &gt; LOGIN_LOCKOUT_MINUTES) {
+                reset_failed_attempts($pdo, $user['id']);
+                $user['failed_attempts'] = 0;
+            }
+
+            if (password_verify($password, $user['password_hash'])) {
+                record_login($pdo, $user['id']);
+                $_SESSION['user_id']   = $user['id'];
+                $_SESSION['user_name'] = $user['name'];
+                $_SESSION['user_role'] = $user['role'];
+                header('Location: ' . BASE_URL . '/');
+                exit;
+            } else {
+                $new_attempts = $user['failed_attempts'] + 1;
+                record_failed_login($pdo, $user['id'], $new_attempts);
+
+                if ($new_attempts &gt;= LOGIN_MAX_ATTEMPTS &amp;&amp; $minutes &lt;= LOGIN_LOCKOUT_MINUTES) {
+                    lock_user($pdo, $user['id']);
+                    send_lock_warning_email($user['email'], $user['name']);
+                    $errors[] = 'Your account has been locked due to too many failed attempts.';
+                } else {
+                    $remaining = LOGIN_MAX_ATTEMPTS - $new_attempts;
+                    $errors[]  = 'Invalid email or password. ' . ($remaining &gt; 0 ? "{$remaining} attempt(s) remaining." : '');
+                }
+            }
+        }
+    }
+}
+
+$page_title = 'Login';
+require_once VIEWS . '/fixed/head.php';
+require_once VIEWS . '/fixed/top-nav.php';
+?&gt;
+&lt;div class="auth-box"&gt;
+    &lt;h1&gt;Log In&lt;/h1&gt;
+    &lt;?php if ($errors): ?&gt;
+        &lt;div class="alert alert-error"&gt;&lt;ul&gt;&lt;?php foreach ($errors as $e): ?&gt;&lt;li&gt;&lt;?= htmlspecialchars($e) ?&gt;&lt;/li&gt;&lt;?php endforeach; ?&gt;&lt;/ul&gt;&lt;/div&gt;
+    &lt;?php endif; ?&gt;
+    &lt;form method="POST" action=""&gt;
+        &lt;div class="form-group"&gt;
+            &lt;label for="email"&gt;Email Address&lt;/label&gt;
+            &lt;input type="email" id="email" name="email" required autofocus&gt;
+        &lt;/div&gt;
+        &lt;div class="form-group"&gt;
+            &lt;label for="password"&gt;Password&lt;/label&gt;
+            &lt;input type="password" id="password" name="password" required&gt;
+        &lt;/div&gt;
+        &lt;button type="submit" class="btn btn-primary btn-full"&gt;Log In&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;p class="auth-link"&gt;Don't have an account? &lt;a href="&lt;?= BASE_URL ?&gt;/views/register.php"&gt;Register&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;?php require_once VIEWS . '/fixed/footer.php'; ?&gt;</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">views/register.php</span></div>
+    <pre>&lt;?php
+require_once dirname(__DIR__) . '/config/config.php';
+require_once ROOT . '/config/connection.php';
+require_once ROOT . '/includes/auth.php';
+require_once ROOT . '/includes/logger.php';
+require_once ROOT . '/includes/mailer.php';
+require_once ROOT . '/models/users.php';
+
+if (session_status() === PHP_SESSION_NONE) session_start();
+log_access();
+
+$errors  = [];
+$success = false;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name     = trim($_POST['name']     ?? '');
+    $email    = trim($_POST['email']    ?? '');
+    $password = trim($_POST['password'] ?? '');
+    $confirm  = trim($_POST['confirm']  ?? '');
+
+    if (empty($name))                               $errors[] = 'Name is required.';
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email address.';
+    if (strlen($password) &lt; 8)                      $errors[] = 'Password must be at least 8 characters.';
+    if ($password !== $confirm)                     $errors[] = 'Passwords do not match.';
+
+    if (empty($errors)) {
+        $pdo = get_db();
+        if (get_user_by_email($pdo, $email)) {
+            $errors[] = 'An account with this email already exists.';
+        } else {
+            $hash  = password_hash($password, PASSWORD_BCRYPT);
+            $token = bin2hex(random_bytes(32));
+            insert_user($pdo, $name, $email, $hash, $token);
+            send_activation_email($email, $name, $token);
+            $success = true;
+        }
+    }
+}
+
+$page_title = 'Register';
+require_once VIEWS . '/fixed/head.php';
+require_once VIEWS . '/fixed/top-nav.php';
+?&gt;
+&lt;div class="auth-box"&gt;
+    &lt;h1&gt;Create an Account&lt;/h1&gt;
+    &lt;?php if ($success): ?&gt;
+        &lt;div class="alert alert-success"&gt;Registration successful! Please check your email to activate your account.&lt;/div&gt;
+    &lt;?php else: ?&gt;
+        &lt;?php if ($errors): ?&gt;
+            &lt;div class="alert alert-error"&gt;&lt;ul&gt;&lt;?php foreach ($errors as $e): ?&gt;&lt;li&gt;&lt;?= htmlspecialchars($e) ?&gt;&lt;/li&gt;&lt;?php endforeach; ?&gt;&lt;/ul&gt;&lt;/div&gt;
+        &lt;?php endif; ?&gt;
+        &lt;form method="POST" action=""&gt;
+            &lt;div class="form-group"&gt;&lt;label&gt;Full Name&lt;/label&gt;&lt;input type="text" name="name" required&gt;&lt;/div&gt;
+            &lt;div class="form-group"&gt;&lt;label&gt;Email Address&lt;/label&gt;&lt;input type="email" name="email" required&gt;&lt;/div&gt;
+            &lt;div class="form-group"&gt;&lt;label&gt;Password&lt;/label&gt;&lt;input type="password" name="password" required&gt;&lt;/div&gt;
+            &lt;div class="form-group"&gt;&lt;label&gt;Confirm Password&lt;/label&gt;&lt;input type="password" name="confirm" required&gt;&lt;/div&gt;
+            &lt;button type="submit" class="btn btn-primary btn-full"&gt;Register&lt;/button&gt;
+        &lt;/form&gt;
+        &lt;p class="auth-link"&gt;Already have an account? &lt;a href="&lt;?= BASE_URL ?&gt;/views/login.php"&gt;Log in&lt;/a&gt;&lt;/p&gt;
+    &lt;?php endif; ?&gt;
+&lt;/div&gt;
+&lt;?php require_once VIEWS . '/fixed/footer.php'; ?&gt;</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">views/activate.php</span></div>
+    <pre>&lt;?php
+require_once dirname(__DIR__) . '/config/config.php';
+require_once ROOT . '/config/connection.php';
+require_once ROOT . '/includes/auth.php';
+require_once ROOT . '/includes/logger.php';
+require_once ROOT . '/models/users.php';
+
+if (session_status() === PHP_SESSION_NONE) session_start();
+log_access();
+
+$token   = trim($_GET['token'] ?? '');
+$success = false;
+$message = '';
+
+if ($token === '') {
+    $message = 'Invalid activation link.';
+} else {
+    $pdo  = get_db();
+    $user = get_user_by_token($pdo, $token);
+    if ($user) {
+        activate_user($pdo, $user['id']);
+        $success = true;
+        $message = 'Your account has been activated. You can now log in.';
+    } else {
+        $message = 'This activation link is invalid or has already been used.';
+    }
+}
+
+$page_title = 'Account Activation';
+require_once VIEWS . '/fixed/head.php';
+require_once VIEWS . '/fixed/top-nav.php';
+?&gt;
+&lt;div class="auth-box"&gt;
+    &lt;h1&gt;Account Activation&lt;/h1&gt;
+    &lt;div class="alert &lt;?= $success ? 'alert-success' : 'alert-error' ?&gt;"&gt;
+        &lt;?= htmlspecialchars($message) ?&gt;
+    &lt;/div&gt;
+    &lt;?php if ($success): ?&gt;
+        &lt;a href="&lt;?= BASE_URL ?&gt;/views/login.php" class="btn btn-primary"&gt;Go to Login&lt;/a&gt;
+    &lt;?php endif; ?&gt;
+&lt;/div&gt;
+&lt;?php require_once VIEWS . '/fixed/footer.php'; ?&gt;</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">views/logout.php</span></div>
+    <pre>&lt;?php
+require_once dirname(__DIR__) . '/config/config.php';
+require_once ROOT . '/includes/logger.php';
+
+if (session_status() === PHP_SESSION_NONE) session_start();
+log_access();
+session_destroy();
+
+header('Location: ' . BASE_URL . '/views/login.php');
+exit;</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">views/recipe.php</span> <small>(skraćeno — key dijelovi)</small></div>
+    <pre>&lt;?php
+require_once dirname(__DIR__) . '/config/config.php';
+// ... (includes: auth, logger, models: recipes, comments, ratings)
+
+$id     = (int) ($_GET['id'] ?? 0);
+$recipe = get_recipe_by_id($pdo, $id);
+if (!$recipe) { header('Location: ' . BASE_URL . '/'); exit; }
+
+$ingredients = get_recipe_ingredients($pdo, $id);
+$comments    = get_comments_for_recipe($pdo, $id);
+$user_rating = is_logged_in() ? get_user_rating($pdo, $id, current_user_id()) : null;
+
+// POST: insert_comment() or upsert_rating()
+?&gt;
+&lt;article class="recipe-detail"&gt;
+    &lt;!-- image, meta, ingredients list --&gt;
+    &lt;section class="rating-section"&gt;
+        &lt;!-- star rating form (1–5), INSERT ... ON DUPLICATE KEY UPDATE --&gt;
+    &lt;/section&gt;
+    &lt;section class="comments-section"&gt;
+        &lt;!-- comment form + comment list --&gt;
+    &lt;/section&gt;
+&lt;/article&gt;</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">views/add_recipe.php</span> <small>(skraćeno)</small></div>
+    <pre>&lt;?php
+// requires: auth (require_login), upload, models: recipes, categories
+// POST: upload_image() → insert_recipe() → save_recipe_ingredients()
+?&gt;
+&lt;form method="POST" enctype="multipart/form-data" class="recipe-form"&gt;
+    &lt;!-- title, category, difficulty, prep_time, description, image --&gt;
+    &lt;div id="ingredients-list"&gt;&lt;/div&gt;
+    &lt;button type="button" id="add-ingredient"&gt;+ Add Ingredient&lt;/button&gt;
+&lt;/form&gt;
+&lt;script&gt;const BASE_URL = '&lt;?= BASE_URL ?&gt;';&lt;/script&gt;
+&lt;script src="&lt;?= BASE_URL ?&gt;/assets/js/recipe-form.js"&gt;&lt;/script&gt;</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">views/my_recipes.php</span> <small>(skraćeno)</small></div>
+    <pre>&lt;?php
+// require_login(); get_user_recipes($pdo, current_user_id())
+// POST delete_id → provjera vlasništva → delete_recipe()
+?&gt;
+&lt;table class="data-table"&gt;
+    &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Title&lt;/th&gt;&lt;th&gt;Category&lt;/th&gt;&lt;th&gt;Difficulty&lt;/th&gt;&lt;th&gt;Rating&lt;/th&gt;&lt;th&gt;Actions&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;!-- foreach $recipes: edit/delete buttons, data-label atribs za mobile --&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">views/admin/index.php</span> <small>(skraćeno)</small></div>
+    <pre>&lt;?php
+// require_admin(); count_logins_today(); COUNT(*) queries; parse access.log
+?&gt;
+&lt;div class="stats-grid"&gt;
+    &lt;div class="stat-card"&gt;Total Users: &lt;?= $total_users ?&gt;&lt;/div&gt;
+    &lt;div class="stat-card"&gt;Total Recipes: &lt;?= $total_recipes ?&gt;&lt;/div&gt;
+    &lt;div class="stat-card"&gt;Total Comments: &lt;?= $total_comments ?&gt;&lt;/div&gt;
+    &lt;div class="stat-card highlight"&gt;Logins Today: &lt;?= $logins_today ?&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Page visit stats table parsed from logs/access.log --&gt;</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">assets/js/main.js</span></div>
+    <pre>(function () {
+    'use strict';
+
+    const grid       = document.getElementById('recipes-grid');
+    const pagination = document.getElementById('pagination');
+    if (!grid) return;
+
+    const BASE_URL   = document.querySelector('meta[name="base-url"]')?.content
+                       || window.location.origin + '/cookify';
+    const API_URL    = BASE_URL + '/api/get_recipes.php';
+
+    const catSelect   = document.getElementById('filter-category');
+    const sortSelect  = document.getElementById('filter-sort');
+    const orderSelect = document.getElementById('filter-order');
+    let currentPage = 1;
+
+    function fetchRecipes() {
+        const params = new URLSearchParams({
+            category_id: catSelect.value,
+            sort:        sortSelect.value,
+            order:       orderSelect.value,
+            page:        currentPage,
+            per_page:    6,
+        });
+        grid.innerHTML = '&lt;p class="loading"&gt;Loading…&lt;/p&gt;';
+        pagination.innerHTML = '';
+        fetch(API_URL + '?' + params.toString())
+            .then(r =&gt; r.json())
+            .then(data =&gt; {
+                renderGrid(data.recipes);
+                renderPagination(data.total_pages, data.page);
+            })
+            .catch(() =&gt; { grid.innerHTML = '&lt;p class="error"&gt;Failed to load recipes.&lt;/p&gt;'; });
+    }
+
+    function renderGrid(recipes) {
+        if (recipes.length === 0) { grid.innerHTML = '&lt;p class="empty"&gt;No recipes found.&lt;/p&gt;'; return; }
+        grid.innerHTML = recipes.map(r =&gt; `
+            &lt;article class="recipe-card"&gt;
+                &lt;a href="${r.url}" class="card-image-link"&gt;
+                    ${r.image_thumb ? `&lt;img src="${r.image_thumb}" alt="${escHtml(r.title)}" loading="lazy"&gt;`
+                                   : `&lt;div class="card-no-image"&gt;🍽️&lt;/div&gt;`}
+                &lt;/a&gt;
+                &lt;div class="card-body"&gt;
+                    &lt;span class="tag"&gt;${escHtml(r.category_name)}&lt;/span&gt;
+                    &lt;span class="tag tag-${r.difficulty}"&gt;${capitalize(r.difficulty)}&lt;/span&gt;
+                    &lt;h2 class="card-title"&gt;&lt;a href="${r.url}"&gt;${escHtml(r.title)}&lt;/a&gt;&lt;/h2&gt;
+                    &lt;p class="card-desc"&gt;${escHtml(r.description.substring(0, 100))}…&lt;/p&gt;
+                    &lt;div class="card-meta"&gt;
+                        &lt;span&gt;⏱ ${r.prep_time} min&lt;/span&gt;
+                        &lt;span&gt;⭐ ${r.avg_rating || 'No ratings'}&lt;/span&gt;
+                        &lt;span&gt;✍️ ${escHtml(r.author_name)}&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/article&gt;
+        `).join('');
+    }
+
+    function renderPagination(totalPages, currentP) {
+        if (totalPages &lt;= 1) return;
+        let html = '';
+        if (currentP &gt; 1) html += `&lt;button class="page-btn" data-page="${currentP - 1}"&gt;← Prev&lt;/button&gt;`;
+        for (let i = 1; i &lt;= totalPages; i++) {
+            html += `&lt;button class="page-btn ${i === currentP ? 'active' : ''}" data-page="${i}"&gt;${i}&lt;/button&gt;`;
+        }
+        if (currentP &lt; totalPages) html += `&lt;button class="page-btn" data-page="${currentP + 1}"&gt;Next →&lt;/button&gt;`;
+        pagination.innerHTML = html;
+        pagination.querySelectorAll('.page-btn').forEach(btn =&gt; {
+            btn.addEventListener('click', () =&gt; {
+                currentPage = parseInt(btn.dataset.page, 10);
+                fetchRecipes();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    }
+
+    function escHtml(str) {
+        const d = document.createElement('div');
+        d.textContent = str || '';
+        return d.innerHTML;
+    }
+
+    function capitalize(str) { return str.charAt(0).toUpperCase() + str.slice(1); }
+
+    [catSelect, sortSelect, orderSelect].forEach(el =&gt; {
+        el.addEventListener('change', () =&gt; { currentPage = 1; fetchRecipes(); });
+    });
+
+    fetchRecipes();
+}());</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">assets/js/recipe-form.js</span></div>
+    <pre>(function () {
+    'use strict';
+
+    const list   = document.getElementById('ingredients-list');
+    const addBtn = document.getElementById('add-ingredient');
+    if (!list || !addBtn) return;
+
+    function buildRow(ingredients, selectedId, selectedQty) {
+        const row = document.createElement('div');
+        row.className = 'ingredient-row';
+
+        const sel = document.createElement('select');
+        sel.name = 'ingredient_id[]';
+        sel.required = true;
+
+        const placeholder = document.createElement('option');
+        placeholder.value = '';
+        placeholder.textContent = 'Select ingredient…';
+        sel.appendChild(placeholder);
+
+        ingredients.forEach(function (ing) {
+            const opt = document.createElement('option');
+            opt.value = ing.id;
+            opt.textContent = ing.name + ' (' + ing.unit + ')';
+            if (String(ing.id) === String(selectedId)) opt.selected = true;
+            sel.appendChild(opt);
+        });
+
+        const qty = document.createElement('input');
+        qty.type = 'number';
+        qty.name = 'ingredient_qty[]';
+        qty.placeholder = 'Quantity';
+        qty.step = '0.01';
+        qty.min = '0.01';
+        qty.required = true;
+        if (selectedQty) qty.value = selectedQty;
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn btn-small btn-danger remove-ingredient';
+        btn.textContent = '✕';
+
+        row.appendChild(sel);
+        row.appendChild(qty);
+        row.appendChild(btn);
+        return row;
+    }
+
+    fetch(BASE_URL + '/api/get_ingredients.php')
+        .then(function (r) { return r.json(); })
+        .then(function (ingredients) {
+            const existingRows = list.querySelectorAll('.ingredient-row');
+            if (existingRows.length === 0) {
+                list.appendChild(buildRow(ingredients, null, null));
+            } else {
+                existingRows.forEach(function (row) {
+                    const newRow = buildRow(ingredients, row.dataset.ingId, row.dataset.ingQty);
+                    row.replaceWith(newRow);
+                });
+            }
+            addBtn.addEventListener('click', function () {
+                list.appendChild(buildRow(ingredients, null, null));
+            });
+            list.addEventListener('click', function (e) {
+                if (e.target.classList.contains('remove-ingredient')) {
+                    if (list.querySelectorAll('.ingredient-row').length &gt; 1) {
+                        e.target.closest('.ingredient-row').remove();
+                    }
+                }
+            });
+        })
+        .catch(function () { list.innerHTML = '&lt;p class="error"&gt;Failed to load ingredients.&lt;/p&gt;'; });
+}());</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="filename">📄 <span class="ext">database.sql</span> <small>(schema — bez seed podataka)</small></div>
+    <pre>CREATE DATABASE IF NOT EXISTS `cookify`
+    CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `cookify`;
+
+CREATE TABLE `users` (
+    `id`               INT UNSIGNED     NOT NULL AUTO_INCREMENT,
+    `name`             VARCHAR(100)     NOT NULL,
+    `email`            VARCHAR(150)     NOT NULL UNIQUE,
+    `password_hash`    VARCHAR(255)     NOT NULL,
+    `role`             ENUM('user','admin') NOT NULL DEFAULT 'user',
+    `activation_token` VARCHAR(64)      DEFAULT NULL,
+    `is_active`        TINYINT(1)       NOT NULL DEFAULT 0,
+    `failed_attempts`  TINYINT UNSIGNED NOT NULL DEFAULT 0,
+    `last_failed_at`   DATETIME         DEFAULT NULL,
+    `is_locked`        TINYINT(1)       NOT NULL DEFAULT 0,
+    `created_at`       DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `last_login_at`    DATETIME         DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `categories` (
+    `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name`        VARCHAR(100) NOT NULL,
+    `description` TEXT         DEFAULT NULL,
+    `created_at`  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `recipes` (
+    `id`             INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `user_id`        INT UNSIGNED NOT NULL,
+    `category_id`    INT UNSIGNED NOT NULL,
+    `title`          VARCHAR(200) NOT NULL,
+    `description`    TEXT         NOT NULL,
+    `prep_time`      SMALLINT UNSIGNED NOT NULL,
+    `difficulty`     ENUM('easy','medium','hard') NOT NULL DEFAULT 'medium',
+    `image_original` VARCHAR(255) DEFAULT NULL,
+    `image_thumb`    VARCHAR(255) DEFAULT NULL,
+    `created_at`     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at`     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`user_id`)     REFERENCES `users`(`id`)      ON DELETE CASCADE,
+    FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `ingredients` (
+    `id`   INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    `unit` VARCHAR(30)  NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `recipe_ingredients` (
+    `recipe_id`     INT UNSIGNED NOT NULL,
+    `ingredient_id` INT UNSIGNED NOT NULL,
+    `quantity`      DECIMAL(8,2) NOT NULL,
+    PRIMARY KEY (`recipe_id`, `ingredient_id`),
+    FOREIGN KEY (`recipe_id`)     REFERENCES `recipes`(`id`)     ON DELETE CASCADE,
+    FOREIGN KEY (`ingredient_id`) REFERENCES `ingredients`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `comments` (
+    `id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `recipe_id`  INT UNSIGNED NOT NULL,
+    `user_id`    INT UNSIGNED NOT NULL,
+    `body`       TEXT         NOT NULL,
+    `created_at` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`recipe_id`) REFERENCES `recipes`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`user_id`)   REFERENCES `users`(`id`)   ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `ratings` (
+    `id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `recipe_id`  INT UNSIGNED NOT NULL,
+    `user_id`    INT UNSIGNED NOT NULL,
+    `score`      TINYINT UNSIGNED NOT NULL CHECK (`score` BETWEEN 1 AND 5),
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uq_recipe_user` (`recipe_id`, `user_id`),
+    FOREIGN KEY (`recipe_id`) REFERENCES `recipes`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`user_id`)   REFERENCES `users`(`id`)   ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</pre>
+  </div>
+
+</section>
+
+</body>
+</html>

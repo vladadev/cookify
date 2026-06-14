@@ -32,7 +32,7 @@ function send_email(string $to, string $to_name, string $subject, string $body):
 }
 
 function send_activation_email(string $email, string $name, string $token): bool {
-    $link    = BASE_URL . '/pages/activate.php?token=' . urlencode($token);
+    $link    = BASE_URL . '/views/activate.php?token=' . urlencode($token);
     $subject = 'Activate your Cookify account';
     $body    = "
         <h2>Welcome to Cookify, {$name}!</h2>
