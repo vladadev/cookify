@@ -3,7 +3,7 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require_once BASE_PATH . '/vendor/autoload.php';
+require_once ROOT . '/vendor/autoload.php';
 
 function send_email(string $to, string $to_name, string $subject, string $body): bool {
     $mail = new PHPMailer(true);
