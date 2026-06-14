@@ -1,9 +1,8 @@
 <?php
 require_once dirname(__DIR__) . '/config/config.php';
+require_once ROOT . '/config/connection.php';
+require_once ROOT . '/models/ingredients.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
-$pdo  = get_db();
-$rows = $pdo->query('SELECT id, name, unit FROM ingredients ORDER BY name')->fetchAll();
-
-echo json_encode($rows);
+echo json_encode(get_all_ingredients(get_db()));

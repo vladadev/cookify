@@ -1,8 +1,9 @@
 vendor/
+.env
 uploads/original/*
 uploads/thumbs/*
 logs/access.log
 !uploads/original/.gitkeep
 !uploads/thumbs/.gitkeep
 !logs/.gitkeep
-config/config.php
+demo-sajt/
