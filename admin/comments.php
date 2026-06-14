@@ -45,11 +45,11 @@ require_once dirname(__DIR__) . '/includes/header.php';
     <tbody>
         <?php foreach ($comments as $c): ?>
             <tr>
-                <td><?= htmlspecialchars($c['user_name']) ?></td>
-                <td><a href="<?= BASE_URL ?>/pages/recipe.php?id=<?= $c['recipe_id'] ?>"><?= htmlspecialchars($c['recipe_title']) ?></a></td>
-                <td><?= htmlspecialchars(mb_substr($c['body'], 0, 80)) ?><?= mb_strlen($c['body']) > 80 ? '…' : '' ?></td>
-                <td><?= date('M j, Y H:i', strtotime($c['created_at'])) ?></td>
-                <td>
+                <td data-label="User"><?= htmlspecialchars($c['user_name']) ?></td>
+                <td data-label="Recipe"><a href="<?= BASE_URL ?>/pages/recipe.php?id=<?= $c['recipe_id'] ?>"><?= htmlspecialchars($c['recipe_title']) ?></a></td>
+                <td data-label="Comment"><?= htmlspecialchars(mb_substr($c['body'], 0, 80)) ?><?= mb_strlen($c['body']) > 80 ? '…' : '' ?></td>
+                <td data-label="Date"><?= date('M j, Y H:i', strtotime($c['created_at'])) ?></td>
+                <td data-label="Actions">
                     <form method="POST" action="" onsubmit="return confirm('Delete this comment?')">
                         <input type="hidden" name="delete_id" value="<?= $c['id'] ?>">
                         <button type="submit" class="btn btn-small btn-danger">Delete</button>

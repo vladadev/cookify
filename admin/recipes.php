@@ -47,13 +47,13 @@ require_once dirname(__DIR__) . '/includes/header.php';
     <tbody>
         <?php foreach ($recipes as $r): ?>
             <tr>
-                <td><?= $r['id'] ?></td>
-                <td><a href="<?= BASE_URL ?>/pages/recipe.php?id=<?= $r['id'] ?>"><?= htmlspecialchars($r['title']) ?></a></td>
-                <td><?= htmlspecialchars($r['author_name']) ?></td>
-                <td><?= htmlspecialchars($r['category_name']) ?></td>
-                <td><span class="tag tag-<?= $r['difficulty'] ?>"><?= ucfirst($r['difficulty']) ?></span></td>
-                <td><?= date('M j, Y', strtotime($r['created_at'])) ?></td>
-                <td class="table-actions">
+                <td data-label="ID"><?= $r['id'] ?></td>
+                <td data-label="Title"><a href="<?= BASE_URL ?>/pages/recipe.php?id=<?= $r['id'] ?>"><?= htmlspecialchars($r['title']) ?></a></td>
+                <td data-label="Author"><?= htmlspecialchars($r['author_name']) ?></td>
+                <td data-label="Category"><?= htmlspecialchars($r['category_name']) ?></td>
+                <td data-label="Difficulty"><span class="tag tag-<?= $r['difficulty'] ?>"><?= ucfirst($r['difficulty']) ?></span></td>
+                <td data-label="Added"><?= date('M j, Y', strtotime($r['created_at'])) ?></td>
+                <td data-label="Actions" class="table-actions">
                     <a href="<?= BASE_URL ?>/pages/edit_recipe.php?id=<?= $r['id'] ?>" class="btn btn-small btn-secondary">Edit</a>
                     <form method="POST" action="" style="display:inline"
                           onsubmit="return confirm('Delete this recipe?')">

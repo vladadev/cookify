@@ -48,7 +48,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
         <a href="<?= BASE_URL ?>/pages/add_recipe.php" class="btn btn-primary">Add Your First Recipe</a>
     </div>
 <?php else: ?>
-    <table class="data-table">
+    <div class="table-scroll"><table class="data-table">
         <thead>
             <tr>
                 <th>Title</th>
@@ -63,13 +63,13 @@ require_once dirname(__DIR__) . '/includes/header.php';
         <tbody>
             <?php foreach ($recipes as $r): ?>
                 <tr>
-                    <td><a href="<?= BASE_URL ?>/pages/recipe.php?id=<?= $r['id'] ?>"><?= htmlspecialchars($r['title']) ?></a></td>
-                    <td><?= htmlspecialchars($r['category_name']) ?></td>
-                    <td><span class="tag tag-<?= $r['difficulty'] ?>"><?= ucfirst($r['difficulty']) ?></span></td>
-                    <td><?= $r['prep_time'] ?> min</td>
-                    <td><?= $r['avg_rating'] ?? '—' ?></td>
-                    <td><?= date('M j, Y', strtotime($r['created_at'])) ?></td>
-                    <td class="table-actions">
+                    <td data-label="Title"><a href="<?= BASE_URL ?>/pages/recipe.php?id=<?= $r['id'] ?>"><?= htmlspecialchars($r['title']) ?></a></td>
+                    <td data-label="Category"><?= htmlspecialchars($r['category_name']) ?></td>
+                    <td data-label="Difficulty"><span class="tag tag-<?= $r['difficulty'] ?>"><?= ucfirst($r['difficulty']) ?></span></td>
+                    <td data-label="Prep Time"><?= $r['prep_time'] ?> min</td>
+                    <td data-label="Rating"><?= $r['avg_rating'] ?? '—' ?></td>
+                    <td data-label="Posted"><?= date('M j, Y', strtotime($r['created_at'])) ?></td>
+                    <td data-label="Actions" class="table-actions">
                         <a href="<?= BASE_URL ?>/pages/edit_recipe.php?id=<?= $r['id'] ?>" class="btn btn-small btn-secondary">Edit</a>
                         <form method="POST" action="" style="display:inline"
                               onsubmit="return confirm('Delete this recipe?')">
@@ -80,7 +80,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
                 </tr>
             <?php endforeach; ?>
         </tbody>
-    </table>
+    </table></div>
 <?php endif; ?>
 
 <?php require_once dirname(__DIR__) . '/includes/footer.php'; ?>

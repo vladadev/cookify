@@ -21,9 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password = trim($_POST['password'] ?? '');
         $role     = in_array($_POST['role'] ?? '', ['user', 'admin'], true) ? $_POST['role'] : 'user';
 
-        if (empty($name))                                   $errors[] = 'Name is required.';
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL))     $errors[] = 'Invalid email.';
-        if (strlen($password) < 8)                          $errors[] = 'Password must be at least 8 characters.';
+        if (empty($name))                               $errors[] = 'Name is required.';
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email.';
+        if (strlen($password) < 8)                      $errors[] = 'Password must be at least 8 characters.';
 
         if (empty($errors)) {
             $chk = $pdo->prepare('SELECT id FROM users WHERE email = ?');
@@ -53,16 +53,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } else {
         match ($action) {
-            'set_role' => (function() use ($pdo, $user_id, &$flash) {
+            'set_role' => (function () use ($pdo, $user_id, &$flash) {
                 $role = in_array($_POST['role'] ?? '', ['user', 'admin'], true) ? $_POST['role'] : 'user';
                 $pdo->prepare('UPDATE users SET role = ? WHERE id = ?')->execute([$role, $user_id]);
                 $flash = ['type' => 'success', 'msg' => 'Role updated.'];
             })(),
-            'unlock' => (function() use ($pdo, $user_id, &$flash) {
+            'unlock' => (function () use ($pdo, $user_id, &$flash) {
                 $pdo->prepare('UPDATE users SET is_locked = 0, failed_attempts = 0 WHERE id = ?')->execute([$user_id]);
                 $flash = ['type' => 'success', 'msg' => 'Account unlocked.'];
             })(),
-            'delete' => (function() use ($pdo, $user_id, &$flash) {
+            'delete' => (function () use ($pdo, $user_id, &$flash) {
                 $pdo->prepare('DELETE FROM users WHERE id = ?')->execute([$user_id]);
                 $flash = ['type' => 'success', 'msg' => 'User deleted.'];
             })(),
@@ -97,7 +97,6 @@ require_once dirname(__DIR__) . '/includes/header.php';
 <?php if ($flash): ?>
     <div class="alert alert-<?= $flash['type'] ?>"><?= htmlspecialchars($flash['msg']) ?></div>
 <?php endif; ?>
-
 <?php if ($errors): ?>
     <div class="alert alert-error"><ul><?php foreach ($errors as $e): ?><li><?= htmlspecialchars($e) ?></li><?php endforeach; ?></ul></div>
 <?php endif; ?>
@@ -135,20 +134,42 @@ require_once dirname(__DIR__) . '/includes/header.php';
 <!-- Users Table -->
 <div class="admin-section">
     <h2>All Users (<?= count($users) ?>)</h2>
-    <table class="data-table">
+    <div class="table-scroll">
+    <table class="data-table users-table">
         <thead>
             <tr>
-                <th>ID</th><th>Name</th><th>Email</th><th>Role</th>
-                <th>Status</th><th>Failed</th><th>Last Login</th><th>Registered</th><th>Actions</th>
+                <th>User</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Last Login</th>
+                <th class="actions-col">Actions</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($users as $u): ?>
                 <tr class="<?= $u['is_locked'] ? 'row-locked' : '' ?>">
-                    <td><?= $u['id'] ?></td>
-                    <td><?= htmlspecialchars($u['name']) ?></td>
-                    <td><?= htmlspecialchars($u['email']) ?></td>
-                    <td><?= $u['role'] ?></td>
+
+                    <!-- User info cell -->
+                    <td class="user-info-cell">
+                        <div class="user-name"><?= htmlspecialchars($u['name']) ?></div>
+                        <div class="user-email"><?= htmlspecialchars($u['email']) ?></div>
+                        <div class="user-meta">
+                            ID #<?= $u['id'] ?> &bull;
+                            Joined <?= date('M j, Y', strtotime($u['created_at'])) ?>
+                            <?php if ($u['failed_attempts'] > 0): ?>
+                                &bull; <span class="text-danger"><?= $u['failed_attempts'] ?> failed attempt(s)</span>
+                            <?php endif; ?>
+                        </div>
+                    </td>
+
+                    <!-- Role -->
+                    <td>
+                        <span class="badge <?= $u['role'] === 'admin' ? 'badge-admin' : 'badge-user' ?>">
+                            <?= ucfirst($u['role']) ?>
+                        </span>
+                    </td>
+
+                    <!-- Status -->
                     <td>
                         <?php if ($u['is_locked']): ?>
                             <span class="badge badge-danger">Locked</span>
@@ -158,59 +179,81 @@ require_once dirname(__DIR__) . '/includes/header.php';
                             <span class="badge badge-success">Active</span>
                         <?php endif; ?>
                     </td>
-                    <td><?= $u['failed_attempts'] ?></td>
-                    <td><?= $u['last_login_at'] ? date('M j, Y H:i', strtotime($u['last_login_at'])) : '—' ?></td>
-                    <td><?= date('M j, Y', strtotime($u['created_at'])) ?></td>
-                    <td class="table-actions">
-                        <!-- Change role -->
-                        <form method="POST" action="" style="display:inline">
-                            <input type="hidden" name="action"  value="set_role">
-                            <input type="hidden" name="user_id" value="<?= $u['id'] ?>">
-                            <select name="role" onchange="this.form.submit()">
-                                <option value="user"  <?= $u['role'] === 'user'  ? 'selected' : '' ?>>User</option>
-                                <option value="admin" <?= $u['role'] === 'admin' ? 'selected' : '' ?>>Admin</option>
-                            </select>
-                        </form>
 
-                        <!-- Change password -->
-                        <button type="button" class="btn btn-small btn-secondary"
-                                onclick="document.getElementById('pwd-form-<?= $u['id'] ?>').classList.toggle('hidden')">
-                            🔑 Pwd
-                        </button>
-
-                        <?php if ($u['is_locked']): ?>
-                            <form method="POST" action="" style="display:inline">
-                                <input type="hidden" name="action"  value="unlock">
-                                <input type="hidden" name="user_id" value="<?= $u['id'] ?>">
-                                <button type="submit" class="btn btn-small btn-secondary">Unlock</button>
-                            </form>
-                        <?php endif; ?>
-
-                        <?php if ($u['id'] !== current_user_id()): ?>
-                            <form method="POST" action="" style="display:inline"
-                                  onsubmit="return confirm('Delete this user and all their content?')">
-                                <input type="hidden" name="action"  value="delete">
-                                <input type="hidden" name="user_id" value="<?= $u['id'] ?>">
-                                <button type="submit" class="btn btn-small btn-danger">Delete</button>
-                            </form>
-                        <?php endif; ?>
+                    <!-- Last login -->
+                    <td class="nowrap">
+                        <?= $u['last_login_at'] ? date('M j, Y', strtotime($u['last_login_at'])) : '—' ?>
                     </td>
-                </tr>
-                <!-- Change password inline form -->
-                <tr id="pwd-form-<?= $u['id'] ?>" class="hidden">
-                    <td colspan="9">
-                        <form method="POST" action="" class="inline-pwd-form">
-                            <input type="hidden" name="action"  value="change_password">
-                            <input type="hidden" name="user_id" value="<?= $u['id'] ?>">
-                            <strong>New password for <?= htmlspecialchars($u['name']) ?>:</strong>
-                            <input type="password" name="new_password" placeholder="Min 8 characters" minlength="8" required>
-                            <button type="submit" class="btn btn-small btn-primary">Save Password</button>
-                        </form>
+
+                    <!-- Actions -->
+                    <td class="actions-col">
+                        <div class="user-actions">
+
+                            <!-- Change role -->
+                            <form method="POST" action="">
+                                <input type="hidden" name="action"  value="set_role">
+                                <input type="hidden" name="user_id" value="<?= $u['id'] ?>">
+                                <select name="role" class="role-select" onchange="this.form.submit()"
+                                        <?= $u['id'] === current_user_id() ? 'disabled' : '' ?>>
+                                    <option value="user"  <?= $u['role'] === 'user'  ? 'selected' : '' ?>>User</option>
+                                    <option value="admin" <?= $u['role'] === 'admin' ? 'selected' : '' ?>>Admin</option>
+                                </select>
+                            </form>
+
+                            <!-- Change password -->
+                            <button type="button" class="btn btn-small btn-secondary"
+                                    onclick="togglePwdForm(<?= $u['id'] ?>)">
+                                🔑 Password
+                            </button>
+
+                            <!-- Unlock -->
+                            <?php if ($u['is_locked']): ?>
+                                <form method="POST" action="">
+                                    <input type="hidden" name="action"  value="unlock">
+                                    <input type="hidden" name="user_id" value="<?= $u['id'] ?>">
+                                    <button type="submit" class="btn btn-small btn-warning">🔓 Unlock</button>
+                                </form>
+                            <?php endif; ?>
+
+                            <!-- Delete -->
+                            <?php if ($u['id'] !== current_user_id()): ?>
+                                <form method="POST" action=""
+                                      onsubmit="return confirm('Delete <?= htmlspecialchars(addslashes($u['name'])) ?>? This cannot be undone.')">
+                                    <input type="hidden" name="action"  value="delete">
+                                    <input type="hidden" name="user_id" value="<?= $u['id'] ?>">
+                                    <button type="submit" class="btn btn-small btn-danger">🗑 Delete</button>
+                                </form>
+                            <?php else: ?>
+                                <span class="badge badge-muted">You</span>
+                            <?php endif; ?>
+
+                        </div>
+
+                        <!-- Inline password form (hidden by default) -->
+                        <div id="pwd-form-<?= $u['id'] ?>" class="pwd-inline hidden">
+                            <form method="POST" action="">
+                                <input type="hidden" name="action"  value="change_password">
+                                <input type="hidden" name="user_id" value="<?= $u['id'] ?>">
+                                <input type="password" name="new_password" placeholder="New password (min 8)" minlength="8" required>
+                                <button type="submit" class="btn btn-small btn-primary">Save</button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div><!-- .table-scroll -->
 </div>
+
+<script>
+function togglePwdForm(id) {
+    var el = document.getElementById('pwd-form-' + id);
+    el.classList.toggle('hidden');
+    if (!el.classList.contains('hidden')) {
+        el.querySelector('input[type="password"]').focus();
+    }
+}
+</script>
 
 <?php require_once dirname(__DIR__) . '/includes/footer.php'; ?>

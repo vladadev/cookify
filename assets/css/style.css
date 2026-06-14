@@ -275,16 +275,145 @@ main.container { flex: 1; padding-top: 2rem; padding-bottom: 3rem; }
 
 .hidden { display: none !important; }
 
-.inline-pwd-form {
-    display: flex; gap: .6rem; align-items: center; flex-wrap: wrap;
-    padding: .6rem 1rem; background: #fffbf0;
+/* ── Responsive table wrapper ─────────────────────────────────────────────── */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* ── Users table ─────────────────────────────────────────────────────────── */
+.users-table .user-info-cell { min-width: 200px; }
+.users-table .actions-col    { min-width: 220px; }
+
+.user-name  { font-weight: 600; color: var(--dark); }
+.user-email { font-size: .82rem; color: var(--muted); margin-top: .1rem; }
+.user-meta  { font-size: .78rem; color: #aaa; margin-top: .2rem; }
+.text-danger { color: var(--danger); }
+.nowrap { white-space: nowrap; }
+
+.user-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+    align-items: center;
 }
-.inline-pwd-form input[type="password"] {
-    padding: .4rem .7rem; border: 1.5px solid var(--border);
-    border-radius: var(--radius); font-size: .9rem; width: 220px;
+
+.role-select {
+    padding: .28rem .5rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-size: .82rem;
+    cursor: pointer;
+    background: var(--white);
+}
+
+.badge-admin { background: #e8d5f5; color: #6a1b9a; }
+.badge-user  { background: #dce8ff; color: #1a56a0; }
+.badge-muted { background: #eee; color: #999; }
+.btn-warning  { background: var(--warning); color: var(--white); }
+.btn-warning:hover { background: #d68910; color: var(--white); }
+
+.pwd-inline {
+    margin-top: .5rem;
+    padding: .6rem .75rem;
+    background: #fffbf0;
+    border-radius: var(--radius);
+    border: 1px solid #ffe58f;
+}
+.pwd-inline form {
+    display: flex; gap: .5rem; align-items: center; flex-wrap: wrap;
+}
+.pwd-inline input[type="password"] {
+    padding: .35rem .65rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-size: .88rem;
+    width: 180px;
+    min-width: 120px;
+    flex: 1;
+}
+
+/* ── Global responsive ───────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col    { grid-template-columns: 1fr; }
+    .recipe-detail-header { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 600px) {
+    /* Nav */
+    .site-header .container { flex-direction: column; align-items: flex-start; gap: .5rem; }
+    .main-nav { gap: .2rem; }
+    .main-nav a { padding: .3rem .6rem; font-size: .85rem; }
+
+    /* Filters */
     .filters { flex-direction: column; }
-    .recipe-form .form-row { grid-template-columns: 1fr; }
+    .filters select { width: 100%; }
+
+    /* Recipe grid — single column */
+    .recipes-grid { grid-template-columns: 1fr; }
+
+    /* Forms */
+    .form-row { grid-template-columns: 1fr; }
+    .form-actions { flex-direction: column; }
+    .form-actions .btn { width: 100%; justify-content: center; }
+
+    /* Auth box */
+    .auth-box { margin: 1rem; padding: 1.5rem; }
+
+    /* About page */
+    .about-card { flex-direction: column; padding: 1.5rem; }
+    .about-avatar { font-size: 3rem; }
+
+    /* Admin nav */
+    .admin-nav { gap: .25rem; }
+    .admin-nav a { padding: .3rem .6rem; font-size: .82rem; }
+
+    /* Admin stats */
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+
+    /* Page header */
+    .page-header { flex-direction: column; align-items: flex-start; }
+
+    /* Pagination */
+    .pagination { gap: .25rem; }
+    .page-btn { padding: .35rem .65rem; font-size: .82rem; }
+
+    /* Recipe detail */
+    .recipe-full-image { max-height: 250px; }
+    .recipe-meta-block h1 { font-size: 1.4rem; }
+
+    /* Ingredient rows */
+    .ingredient-row { flex-direction: column; align-items: stretch; }
+    .ingredient-row select,
+    .ingredient-row input { min-width: unset; width: 100%; }
+
+    /* Tables — card layout on mobile */
+    .data-table thead { display: none; }
+    .data-table, .data-table tbody,
+    .data-table tr, .data-table td { display: block; width: 100%; }
+    .data-table tr {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        margin-bottom: .75rem;
+        padding: .5rem .75rem;
+        background: var(--white);
+    }
+    .data-table td {
+        border: none;
+        padding: .3rem 0;
+        font-size: .9rem;
+    }
+    .data-table td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        display: block;
+        font-size: .75rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-bottom: .1rem;
+    }
+    .table-actions { flex-wrap: wrap; }
+
+    /* Users table specific */
+    .user-actions { gap: .3rem; }
+    .role-select  { width: 100%; }
+    .pwd-inline input[type="password"] { width: 100%; }
 }
