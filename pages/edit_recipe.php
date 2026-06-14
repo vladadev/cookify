@@ -139,7 +139,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
             <?php if ($recipe['image_thumb']): ?>
                 <img src="<?= BASE_URL . '/' . htmlspecialchars($recipe['image_thumb']) ?>" alt="Current" class="current-thumb">
             <?php endif; ?>
-            <input type="file" id="image" name="image" accept="image/*">
+            <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/gif">
         </div>
 
         <div class="form-group">

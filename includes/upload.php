@@ -1,8 +1,8 @@
 <?php
 
 function upload_image(array $file): array|false {
-    $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-    $allowed_exts  = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+    $allowed_exts  = ['jpg', 'jpeg', 'png', 'gif'];
 
     if ($file['error'] !== UPLOAD_ERR_OK) {
         return false;
@@ -50,7 +50,6 @@ function create_thumbnail(string $src, string $dst, string $mime): bool {
         'image/jpeg' => imagecreatefromjpeg($src),
         'image/png'  => imagecreatefrompng($src),
         'image/gif'  => imagecreatefromgif($src),
-        'image/webp' => imagecreatefromwebp($src),
         default      => false,
     };
 
@@ -78,7 +77,6 @@ function create_thumbnail(string $src, string $dst, string $mime): bool {
         'image/jpeg' => imagejpeg($thumb, $dst, 85),
         'image/png'  => imagepng($thumb, $dst, 6),
         'image/gif'  => imagegif($thumb, $dst),
-        'image/webp' => imagewebp($thumb, $dst, 85),
         default      => false,
     };
 

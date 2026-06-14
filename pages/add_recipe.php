@@ -117,8 +117,8 @@ require_once dirname(__DIR__) . '/includes/header.php';
 
         <div class="form-group">
             <label for="image">Recipe Image</label>
-            <input type="file" id="image" name="image" accept="image/*">
-            <small>Max 5MB. Supported: jpg, jpeg, png, gif, webp</small>
+            <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/gif">
+            <small>Max 5MB. Supported: jpg, jpeg, png, gif</small>
         </div>
 
         <div class="form-group">
