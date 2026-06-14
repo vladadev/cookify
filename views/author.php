@@ -19,7 +19,7 @@ require_once VIEWS . '/fixed/top-nav.php';
             <h2>Vladimir Mijajlovic 160/25</h2>
             <p class="about-subtitle">Computer Science Student</p>
             <p>
-                <strong>Cookify</strong> was developed as a final assignment for the Web Programming course.
+                <strong>Cookify</strong> was developed as a final assignment for the Web Programiranje PHP 2 course.
                 It is a full-stack PHP web application that allows users to share, discover, and rate recipes.
             </p>
             <h3>Technical Stack</h3>
