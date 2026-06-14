@@ -1,11 +1,4 @@
 -- Cookify Database Schema
--- Import this file via phpMyAdmin
-
-CREATE DATABASE IF NOT EXISTS `cookify`
-    CHARACTER SET utf8mb4
-    COLLATE utf8mb4_unicode_ci;
-
-USE `cookify`;
 
 -- --------------------------------------------------------
 -- Table: users
