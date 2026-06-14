@@ -7,3 +7,5 @@ logs/access.log
 !uploads/thumbs/.gitkeep
 !logs/.gitkeep
 demo-sajt/
+documentation.pdf
+documentation.html
