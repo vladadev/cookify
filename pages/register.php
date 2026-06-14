@@ -1,6 +1,11 @@
 <?php
-require_once dirname(__DIR__) . '/includes/header.php';
+require_once dirname(__DIR__) . '/config/config.php';
+require_once dirname(__DIR__) . '/includes/auth.php';
+require_once dirname(__DIR__) . '/includes/logger.php';
 require_once dirname(__DIR__) . '/includes/mailer.php';
+
+if (session_status() === PHP_SESSION_NONE) session_start();
+log_access();
 
 $page_title = 'Register';
 $errors = [];
@@ -42,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <?php require_once dirname(__DIR__) . '/includes/header.php'; ?>
-
 <div class="auth-box">
     <h1>Create an Account</h1>
 
